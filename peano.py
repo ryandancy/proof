@@ -27,9 +27,9 @@ M2. a * S(b) = a + (a * b).
 
 import itertools
 
-
+# No good very bad prototype of an automated theorem prover with the Peano axioms
 # Types of natural-number objects: Zero, Successor, Variable, Addition, Multiplication
-# Each have an equal_exprs() method which returns a list of (expr trivially equal, justification str)
+# Each have an equal_exprs() method which returns a list of (expr trivially equal, [(equality step, str justification), ...])
 # If b is in a.equal_exprs()'s first elements, then we must have a in b.equal_exprs()'s first elements.
 
 # I really should have used type hints, shouldn't I have?
@@ -65,6 +65,15 @@ class Zero:
 ZERO = Zero()
 
 
+def sub_equal_exprs(expr, sub_exprs, convert_sub_expr_to_expr):
+  """A utility function for generating all the substitution steps to convert a sub-expression (like n in S(n)) to a top-level expression."""
+  additional_exprs = []
+  for sub_expr, steps in sub_exprs:
+    new_expr = convert_sub_expr_to_expr(sub_expr)
+    additional_exprs.append((new_expr, steps + [(Equality(expr, new_expr), S)]))
+  return additional_exprs
+
+
 class Successor:
   """The successor function S(n) with the properties asserted in P2, P3, and P4."""
   
@@ -76,10 +85,11 @@ class Successor:
     
     # A2: S(a + b) = a + S(b)
     if isinstance(self.val, Addition):
-      exprs.append((Addition(self.val.a, Successor(self.val.b)), A2))
+      new_expr = Addition(self.val.a, Successor(self.val.b))
+      exprs.append((new_expr, [(Equality(self, new_expr), A2)]))
     
     # sub-exprs
-    exprs += map(lambda sub_expr: (Successor(sub_expr[0]), sub_expr[1]), self.val.equal_exprs())
+    exprs += sub_equal_exprs(self, self.val.equal_exprs(), Successor)
     
     return exprs
   
@@ -126,19 +136,21 @@ class Addition:
     
     # A1: a + 0 = a
     if self.b == ZERO:
-      exprs.append((self.a, A1))
+      exprs.append((self.a, [(Equality(self, self.a), A1)]))
     
     # A2: a + S(b) = S(a + b)
     if isinstance(self.b, Successor):
-      exprs.append((Successor(Addition(self.a, self.b.val)), A2))
+      new_expr = Successor(Addition(self.a, self.b.val))
+      exprs.append((new_expr, [(Equality(self, new_expr), A2)]))
     
     # M2: a + (a * b) = a * S(b)
     if isinstance(self.b, Multiplication) and self.a == self.b.a:
-      exprs.append((Multiplication(self.a, Successor(self.b.b)), M2))
+      new_expr = Multiplication(self.a, Successor(self.b.b))
+      exprs.append((new_expr, [(Equality(self, new_expr), M2)]))
     
     # sub-exprs for left and right
-    exprs += map(lambda sub_expr: (Addition(sub_expr[0], self.b), sub_expr[1]), self.a.equal_exprs())
-    exprs += map(lambda sub_expr: (Addition(self.a, sub_expr[0]), sub_expr[1]), self.b.equal_exprs())
+    exprs += sub_equal_exprs(self, self.a.equal_exprs(), lambda sub_expr: Addition(sub_expr, self.b))
+    exprs += sub_equal_exprs(self, self.b.equal_exprs(), lambda sub_expr: Addition(self.a, sub_expr))
     
     return exprs
   
@@ -146,7 +158,6 @@ class Addition:
     return f'({self.a} + {self.b})'
   
   def __eq__(self, o):
-    # TODO consult some equality list to determine this
     return isinstance(o, Addition) and self.a == o.a and self.b == o.b
 
 
@@ -161,15 +172,16 @@ class Multiplication:
     
     # M1: a * 0 = 0
     if self.b == ZERO:
-      exprs.append((ZERO, M1))
+      exprs.append((ZERO, [(Equality(self, ZERO), M1)]))
     
     # M2: a * S(b) = a + (a * b)
     if isinstance(self.b, Successor):
-      exprs.append((Addition(self.a, Multiplication(self.a, self.b.val)), M2))
+      new_expr = Addition(self.a, Multiplication(self.a, self.b.val))
+      exprs.append((new_expr, [(Equality(self, new_expr), M2)]))
     
     # sub-exprs for left and right
-    exprs += map(lambda sub_expr: (Multiplication(sub_expr[0], self.b), sub_expr[1]), self.a.equal_exprs())
-    exprs += map(lambda sub_expr: (Multiplication(self.a, sub_expr[0]), sub_expr[1]), self.b.equal_exprs())
+    exprs += sub_equal_exprs(self, self.a.equal_exprs(), lambda sub_expr: Multiplication(sub_expr, self.b))
+    exprs += sub_equal_exprs(self, self.b.equal_exprs(), lambda sub_expr: Multiplication(self.a, sub_expr))
     
     return exprs
   
@@ -177,7 +189,6 @@ class Multiplication:
     return f'({self.a} * {self.b})'
   
   def __eq__(self, o):
-    # TODO consult a list
     return isinstance(o, Multiplication) and self.a == o.a and self.b == o.b
 
 
@@ -223,7 +234,7 @@ class Proof:
     proof = f'Proposition. ({self.hypothesis_str}) => ({self.conclusion}).\nSuppose {self.hypothesis_str}.\n'
     for i, step in enumerate(self.steps):
       proof += f'{i+1}. {step[0]} (by {step[1]})\n'
-    proof += f'Therefore {self.conclusion}.'
+    proof += f'Therefore {self.conclusion}. QED.'
     return proof
 
 
@@ -248,12 +259,14 @@ def prove(hypotheses, conclusion) -> Proof:
       for side in (eq.a, eq.b):
         exprs = side.equal_exprs()
         
-        for expr, justification in exprs:
+        for expr, steps in exprs:
           new_eq = Equality(side, expr)
           
           if new_eq not in equalities and new_eq not in adding_equalities:
             adding_equalities.append(new_eq)
-            proof.add_step(new_eq, justification) # this is a BAD IDEA with a capital BAD
+            
+            for equality, justification in steps:
+              proof.add_step(equality, justification) # BAD BAD BAD
             
             if new_eq == conclusion:
               return proof
