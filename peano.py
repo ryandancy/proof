@@ -26,7 +26,7 @@ M2. a * S(b) = a + (a * b).
 """
 
 import itertools
-from typing import Sequence
+from typing import Sequence, Tuple
 
 # No good very bad prototype of an automated theorem prover with the Peano axioms
 # Types of natural-number objects: Zero, Successor, Variable, Addition, Multiplication
@@ -258,8 +258,7 @@ def prove(hypotheses: Sequence[Equality], conclusion: Equality) -> Proof:
   # the world's least efficient symbol manipulation routine
   # we're just going to keep stock of all the equalities and give up when the size no longer changes
   # this will run forever on any more complicated axiomatic system, probably
-  # this is like O(n!) or something
-  # TODO: don't re-explore things
+  # this is a breadth-first search, essentially
   
   proof = Proof(hypotheses, conclusion)
   
@@ -267,39 +266,30 @@ def prove(hypotheses: Sequence[Equality], conclusion: Equality) -> Proof:
     return proof # well that was easy
   
   equalities = list(hypotheses)
+  explore_queue = [(expr, hypot) for hypot in hypotheses for expr in hypot.items] # list of (expr, equality)
   
-  while True:
-    learned_something = False
+  # just fill in all the equalities we can, what could go wrong
+  while explore_queue:
+    member, eq = explore_queue.pop(0) # inefficient but whatever
     
-    # generate all the equalities we can - O(???)
-    for eq in equalities:
-      new_items = []
-      
-      for member in eq.items:
-        exprs = member.equal_exprs()
+    exprs = member.equal_exprs()
+    
+    for expr, steps in exprs:
+      if expr not in eq.items and (expr, eq) not in explore_queue:
+        eq.items.append(expr)
+        explore_queue.append((expr, eq))
         
-        for expr, steps in exprs:
-          if expr not in eq.items and expr not in new_items:
-            new_items.append(expr)
-            
-            for equality, justification in steps:
-              proof.add_step(equality, justification) # BAD BAD BAD
-            
-            # transitivity
-            if member != eq.representative:
-              proof.add_step(Equality(eq.representative, expr), T) # proactive transitivity is probably bad
-            
-            if set(conclusion.items).issubset(eq.items + new_items):
-              # just to make it look nicer, add another transitivity step
-              if conclusion.items != [eq.representative, expr] and conclusion.items != [expr, eq.representative]:
-                proof.add_step(conclusion, T)
-              return proof
-            
-            learned_something = True
-      
-      eq.items += new_items
-    
-    if not learned_something:
-      return None # we've done a complete search and turned up nothing
-    
-    print(sum(len(eq.items) for eq in equalities))
+        for equality, justification in steps:
+          proof.add_step(equality, justification) # BAD BAD BAD
+        
+        # transitivity
+        if member != eq.representative:
+          proof.add_step(Equality(eq.representative, expr), T) # proactive transitivity is probably bad
+        
+        if set(conclusion.items).issubset(eq.items):
+          # just to make it look nicer, add another transitivity step
+          if conclusion.items != [eq.representative, expr] and conclusion.items != [expr, eq.representative]:
+            proof.add_step(conclusion, T)
+          return proof
+  
+  return None # we've looked everywhere and found nothing
