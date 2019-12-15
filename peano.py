@@ -26,6 +26,7 @@ M2. a * S(b) = a + (a * b).
 """
 
 import itertools
+from typing import Sequence
 
 # No good very bad prototype of an automated theorem prover with the Peano axioms
 # Types of natural-number objects: Zero, Successor, Variable, Addition, Multiplication
@@ -60,6 +61,9 @@ class Zero:
   
   def __eq__(self, o):
     return isinstance(o, Zero) # all zeros are equal
+  
+  def __hash__(self):
+    return 53 # they're all equal and this is prime
 
 # For convenience, we have a single zero
 ZERO = Zero()
@@ -98,6 +102,9 @@ class Successor:
   
   def __eq__(self, o):
     return isinstance(o, Successor) and self.val == o.val # by P3
+  
+  def __hash__(self):
+    return 7 * hash((self.val,))
 
 
 def from_number(a):
@@ -123,6 +130,9 @@ class Variable:
   
   def __eq__(self, o):
     return isinstance(o, Variable) and self.symbol == o.symbol # obeys equality axioms
+  
+  def __hash__(self):
+    return 87 * hash((self.symbol,))
 
 
 class Addition:
@@ -159,6 +169,9 @@ class Addition:
   
   def __eq__(self, o):
     return isinstance(o, Addition) and self.a == o.a and self.b == o.b
+  
+  def __hash__(self):
+    return 13 * hash((self.a, self.b))
 
 
 class Multiplication:
@@ -190,33 +203,36 @@ class Multiplication:
   
   def __eq__(self, o):
     return isinstance(o, Multiplication) and self.a == o.a and self.b == o.b
+  
+  def __hash__(self):
+    return 17 * hash((self.a, self.b))
 
 
 # Will have to be generalized to a "Known" for general things that are known if we ever want to include stuff like
 # divisibility or whatever, but this is good enough for 1+1=2, etc
 class Equality:
-  """An assertion that a = b."""
+  """An assertion that all of the items are equal."""
   
-  def __init__(self, a, b):
-    self.a, self.b = a, b
+  def __init__(self, *items):
+    self.items = list(items)
+    self.representative = items[0] # so we don't have big long a = b = c = ...
+  
+  def add_item(self, item):
+    self.items.append(item)
   
   def __str__(self):
-    return f'{self.a} = {self.b}'
+    return ' = '.join(map(str, self.items))
   
   def __eq__(self, o):
     """Treated as equivalence."""
     if not isinstance(o, Equality):
       return False
     
-    # (a = b) <=> (a = b) - sort of R
-    if self.a == o.a and self.b == o.b:
-      return True
-    
-    # (a = b) <=> (b = a) - SY
-    if self.a == o.b and self.b == o.a:
-      return True
-    
-    return False
+    # obeys SY and R
+    return set(self.items) == set(o.items)
+  
+  def __hash__(self):
+    return 19 * hash(set(self.items))
 
 
 class Proof:
@@ -238,11 +254,12 @@ class Proof:
     return proof
 
 
-def prove(hypotheses, conclusion) -> Proof:
+def prove(hypotheses: Sequence[Equality], conclusion: Equality) -> Proof:
   # the world's least efficient symbol manipulation routine
   # we're just going to keep stock of all the equalities and give up when the size no longer changes
   # this will run forever on any more complicated axiomatic system, probably
   # this is like O(n!) or something
+  # TODO: don't re-explore things
   
   proof = Proof(hypotheses, conclusion)
   
@@ -252,51 +269,37 @@ def prove(hypotheses, conclusion) -> Proof:
   equalities = list(hypotheses)
   
   while True:
-    adding_equalities = []
+    learned_something = False
     
-    # generate all the equalities we can - O(who the heck knows at this point)
+    # generate all the equalities we can - O(???)
     for eq in equalities:
-      for side in (eq.a, eq.b):
-        exprs = side.equal_exprs()
+      new_items = []
+      
+      for member in eq.items:
+        exprs = member.equal_exprs()
         
         for expr, steps in exprs:
-          new_eq = Equality(side, expr)
-          
-          if new_eq not in equalities and new_eq not in adding_equalities:
-            adding_equalities.append(new_eq)
+          if expr not in eq.items and expr not in new_items:
+            new_items.append(expr)
             
             for equality, justification in steps:
               proof.add_step(equality, justification) # BAD BAD BAD
             
-            if new_eq == conclusion:
+            # transitivity
+            if member != eq.representative:
+              proof.add_step(Equality(eq.representative, expr), T) # proactive transitivity is probably bad
+            
+            if set(conclusion.items).issubset(eq.items + new_items):
+              # just to make it look nicer, add another transitivity step
+              if conclusion.items != [eq.representative, expr] and conclusion.items != [expr, eq.representative]:
+                proof.add_step(conclusion, T)
               return proof
-    
-    if not adding_equalities:
-      # we've done a complete search and turned up nothing - we need something fancier like induction
-      return None
-    
-    equalities += adding_equalities
-    
-    # now let's apply transitivity in an O(n^2) step for funsies - should generalize this for doing it with others
-    trans_equalities = [] # trans rights!
-    
-    for eq1, eq2 in itertools.combinations(equalities, 2):
-      new_eq = None
+            
+            learned_something = True
       
-      if eq1.a == eq2.a:
-        new_eq = Equality(eq1.b, eq2.b)
-      elif eq1.a == eq2.b:
-        new_eq = Equality(eq1.b, eq2.a)
-      elif eq1.b == eq2.a:
-        new_eq = Equality(eq1.a, eq2.b)
-      elif eq1.b == eq2.b:
-        new_eq = Equality(eq1.a, eq2.a)
-      
-      if new_eq and new_eq not in equalities and new_eq not in trans_equalities:
-        trans_equalities.append(new_eq)
-        proof.add_step(new_eq, T) # NO GOOD VERY BAD
-        
-        if new_eq == conclusion:
-          return proof
+      eq.items += new_items
     
-    equalities += trans_equalities
+    if not learned_something:
+      return None # we've done a complete search and turned up nothing
+    
+    print(sum(len(eq.items) for eq in equalities))
