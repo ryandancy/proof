@@ -35,6 +35,6 @@ print(proof)
 
 print('--------')
 
-# x = 9*9 => x = 81 - a bit too much
-proof = prove([Eq(x, M(num(9), num(9)))], Eq(x, num(81)))
+# x = 3*3 => x = 9
+proof = prove([Eq(x, M(num(3), num(3)))], Eq(x, num(9)))
 print(proof)

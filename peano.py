@@ -104,7 +104,7 @@ class Successor:
     return isinstance(o, Successor) and self.val == o.val # by P3
   
   def __hash__(self):
-    return 7 * hash((self.val,))
+    return 7 * hash(self.val)
 
 
 def from_number(a):
@@ -215,10 +215,12 @@ class Equality:
   
   def __init__(self, *items):
     self.items = list(items)
+    self.item_set = set(items) # for efficiency
     self.representative = items[0] # so we don't have big long a = b = c = ...
   
   def add_item(self, item):
     self.items.append(item)
+    self.item_set.add(item)
   
   def __str__(self):
     return ' = '.join(map(str, self.items))
@@ -229,10 +231,13 @@ class Equality:
       return False
     
     # obeys SY and R
-    return set(self.items) == set(o.items)
+    return self.item_set == o.item_set
   
   def __hash__(self):
-    return 19 * hash(set(self.items))
+    hsh = 19
+    for item in self.item_set:
+      hsh *= hash(item)
+    return hsh
 
 
 class Proof:
@@ -265,7 +270,6 @@ def prove(hypotheses: Sequence[Equality], conclusion: Equality) -> Proof:
   if conclusion in hypotheses:
     return proof # well that was easy
   
-  equalities = list(hypotheses)
   explore_queue = [(expr, hypot) for hypot in hypotheses for expr in hypot.items] # list of (expr, equality)
   
   # just fill in all the equalities we can, what could go wrong
@@ -275,8 +279,8 @@ def prove(hypotheses: Sequence[Equality], conclusion: Equality) -> Proof:
     exprs = member.equal_exprs()
     
     for expr, steps in exprs:
-      if expr not in eq.items and (expr, eq) not in explore_queue:
-        eq.items.append(expr)
+      if expr not in eq.item_set and (expr, eq) not in explore_queue:
+        eq.add_item(expr)
         explore_queue.append((expr, eq))
         
         for equality, justification in steps:
@@ -286,7 +290,7 @@ def prove(hypotheses: Sequence[Equality], conclusion: Equality) -> Proof:
         if member != eq.representative:
           proof.add_step(Equality(eq.representative, expr), T) # proactive transitivity is probably bad
         
-        if set(conclusion.items).issubset(eq.items):
+        if conclusion.item_set.issubset(eq.item_set):
           # just to make it look nicer, add another transitivity step
           if conclusion.items != [eq.representative, expr] and conclusion.items != [expr, eq.representative]:
             proof.add_step(conclusion, T)
