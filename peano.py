@@ -169,6 +169,7 @@ def find_variables(*equalities) -> Set[Variable]:
   """Get a list of all the distinct variables in the equalities."""
   return {var for equality in equalities for item in equality.items for var in find_variables_in_natural(item)}
 
+# TODO rename these - can substitute anything, not just variables
 def substitute_variable_in_natural(variable: Variable, value: Natural, natural: Natural) -> Natural:
   """Deep-copy the natural, but with variable substituted for value."""
   
@@ -298,6 +299,9 @@ class Equality:
       self.items.append(item)
       self.item_set.add(item)
   
+  def is_contained_within(self, other):
+    return self.item_set.issubset(other.item_set)
+  
   def __str__(self):
     return ' = '.join(map(str, self.items))
   
@@ -343,6 +347,10 @@ class InductionHypothesis:
   def _find_assignment_in_expr(self, hyp_expr: Natural, eq_expr: Natural) -> Dict[Variable, Natural]:
     """Attempt to assign free variables in hyp_expr to expressions in eq_expr, or return None if this can't be done."""
     
+    if hyp_expr == eq_expr:
+      # assuming that the only variables in eq_expr are the ones that are supposed to be there (a big assumption)
+      return {}
+    
     if isinstance(hyp_expr, Variable):
       # we can replace anything with a single variable (not the induction variable though)
       return None if hyp_expr == self.induction_variable else {hyp_expr: eq_expr}
@@ -354,8 +362,8 @@ class InductionHypothesis:
     # union all the child assignments together and check for consistency
     assignment = {}
     
-    for i, hyp_child in enumerate(hyp_expr.children()):
-      child_assignment = self._find_assignment_in_expr(hyp_child, eq_expr.children()[i])
+    for hyp_child, eq_child in zip(hyp_expr.children(), eq_expr.children()):
+      child_assignment = self._find_assignment_in_expr(hyp_child, eq_child)
       
       if child_assignment is None:
         # can't be done in the child => can't be done in the parent
@@ -375,12 +383,11 @@ class InductionHypothesis:
     
     assignment = {}
     
-    for hyp in hyp_permutation:
-      for eq in eq_permutation:
-        expr_assignment = self._find_assignment_in_expr(hyp, eq)
-        
-        if expr_assignment is None or not InductionHypothesis._try_union_assignments(assignment, expr_assignment):
-          return None # conflict
+    for hyp, eq in zip(hyp_permutation, eq_permutation):
+      expr_assignment = self._find_assignment_in_expr(hyp, eq)
+      
+      if expr_assignment is None or not InductionHypothesis._try_union_assignments(assignment, expr_assignment):
+        return None # conflict
     
     return assignment
   
@@ -421,7 +428,7 @@ class InductionHypothesis:
       
       conclusion = self.conclusion
       for var, val in assignment.items():
-        conclusion = substitute_variable(var, val, conclusion)
+        conclusion = substitute_variable(var, val, conclusion)[0]
       
       return {conclusion}
     
@@ -436,14 +443,15 @@ class InductionHypothesis:
     
     for hyp_assignment in hyp_assignments:
       # try to merge it
-      next_assignment = assignment[:]
+      next_assignment = copy.copy(assignment)
       
       if not InductionHypothesis._try_union_assignments(next_assignment, hyp_assignment):
         continue # conflict
       
       # sub in all the rest
       next_hypotheses = copy.deepcopy(hypotheses[1:])
-      next_hypotheses = substitute_variable(var, val, next_hypotheses)
+      for var, val in next_assignment.items():
+        next_hypotheses = substitute_variable(var, val, *next_hypotheses)
       
       # sub in the next conclusion
       next_conclusions = self._get_consequences_for_hypotheses(next_hypotheses, equality, next_assignment)
@@ -454,6 +462,9 @@ class InductionHypothesis:
   def get_consequences(self, equality) -> Set[Equality]:
     """Find all possible assignments of free variables in equality that satisfy hypotheses and return conclusions entailed."""
     
+    print(equality)
+    if equality == Equality(Addition(ZERO, Variable('y')), Addition(ZERO, Variable('y'))):
+      print('Huzzah!')
     return self._get_consequences_for_hypotheses(self.hypotheses, equality, {})
   
   def __str__(self):
@@ -528,6 +539,31 @@ def prove_implication_directly(hypotheses: Sequence[Equality], conclusion: Equal
   equalities = list(hypotheses)
   explore_queue = [(expr, hypot) for hypot in hypotheses for expr in hypot.items] # list of (expr, equality)
   
+  def try_associating_with_equality(entailed_equality: Equality) -> bool: # returns True if it's a new equality, False otherwise
+    nonlocal equalities, explore_queue
+    
+    # try to associate it with an equality
+    for equality in equalities:
+      if not equality.item_set.isdisjoint(entailed_equality.item_set):
+        # it's part of this equality
+        
+        if entailed_equality.item_set.issubset(equality.item_set):
+          # nothing new is added, abort mission
+          return False
+        
+        # add all the new items to it
+        for item in entailed_equality.items:
+          if item not in equality.item_set:
+            equality.add_item(item)
+            explore_queue.append((item, equality))
+        
+        return True # we've found the equality, no need to keep going
+    
+    # we didn't break: no equality found, add a new one
+    equalities.append(entailed_equality)
+    explore_queue += [(item, entailed_equality) for item in entailed_equality.items]
+    return True
+  
   # just fill in all the equalities we can, what could go wrong
   while explore_queue:
     member, eq = explore_queue.pop(0) # inefficient but whatever
@@ -546,42 +582,72 @@ def prove_implication_directly(hypotheses: Sequence[Equality], conclusion: Equal
         if member != eq.representative:
           proof.add_step(Equality(eq.representative, expr), T) # proactive transitivity is probably bad
         
-        if conclusion.item_set.issubset(eq.item_set):
+        if conclusion.is_contained_within(eq):
           # just to make it look nicer, add another transitivity step
-          if conclusion.items != [eq.representative, expr] and conclusion.items != [expr, eq.representative]:
+          if conclusion.item_set != {eq.representative, expr}:
             proof.add_step(conclusion, T)
           return proof
+    
+    # try substituting it into other equalities
+    for sub_for in filter(lambda item: item != member, eq.items):
+      for equality in filter(lambda equality: equality != eq, equalities): # not our own - avoid recursion (?)
+        additional_items = set()
+        
+        for item in equality.items:
+          subbed = substitute_variable_in_natural(member, sub_for, item)
+          if subbed != item and subbed not in additional_items and subbed not in equality.item_set:
+            additional_items.add(subbed)
+        
+        for item in additional_items:
+          proof.add_step(Equality(equality.representative, item), S)
+          equality.add_item(item)
+          
+          if conclusion.is_contained_within(equality):
+            # just to make it look nicer, add another transitivity step - TODO combine this with the snippet above in a function
+            if conclusion.item_set != {equality.representative, item}:
+              proof.add_step(conclusion, T)
+            return proof
     
     # try the induction hypotheses on the equality
     for induction_hypothesis in induction_hypotheses:
       for entailed_equality in induction_hypothesis.get_consequences(eq):
-        new_equality = True
-        
-        # try to associate it with an equality
-        for equality in equalities:
-          if not equality.item_set.isdisjoint(entailed_equality.item_set):
-            # it's part of this equality
-            
-            if entailed_equality.item_set.issubset(equality.item_set):
-              # nothing new is added, abort mission
-              new_equality = False
-              break
-            
-            # add all the new items to it
-            for item in entailed_equality.items:
-              if item not in equality.item_set:
-                equality.add_item(item)
-                explore_queue.append(item)
-            
-            break # we've found the equality, no need to keep going
-        else:
-          # we didn't break: no equality found, add a new one
-          equalities.append(entailed_equality)
-          explore_queue += entailed_equality.items
-        
-        if new_equality:
+        if try_associating_with_equality(entailed_equality):
           proof.add_step(entailed_equality, ASSUMPTION)
+          
+          if conclusion.is_contained_within(entailed_equality):
+            return proof
+    
+    # try the induction hypotheses on a = a, where a is every sub-expression
+    # returns proof if one is found in this step, otherwise None
+    def apply_induction_hypotheses_to_reflexivity(natural: Natural):
+      reflexive_equality = Equality(natural, natural) # valid by R
+      
+      if conclusion.is_contained_within(reflexive_equality):
+        # on the off chance that the reflexive equality is what we're trying to prove
+        proof.add_step(reflexive_equality, R)
+        return proof
+      
+      # try the induction hypotheses on the reflexive equality
+      for induction_hypothesis in induction_hypotheses:
+        for entailed_equality in induction_hypothesis.get_consequences(reflexive_equality):
+          if try_associating_with_equality(entailed_equality):
+            proof.add_step(reflexive_equality, R)
+            proof.add_step(entailed_equality, ASSUMPTION)
+            
+            if conclusion.is_contained_within(entailed_equality):
+              return proof
+      
+      # recurse to all the children
+      for child in natural.children():
+        possible_proof = apply_induction_hypotheses_to_reflexivity(child)
+        if possible_proof is not None:
+          return possible_proof
+    
+    possible_proof = apply_induction_hypotheses_to_reflexivity(member)
+    if possible_proof is not None:
+      return possible_proof
   
+  print(proof)
   return None # we've looked everywhere and found nothing
 
 

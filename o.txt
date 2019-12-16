@@ -1,0 +1,1317 @@
+hypotheses: ['x = (S(S(0)) * S(0))']
+induction hypotheses: []
+conclusion: x = S(S(0))
+Proposition. (x = (S(S(0)) * S(0))) => (x = S(S(0))).
+Proof. Suppose x = (S(S(0)) * S(0)).
+1. (S(S(0)) * S(0)) = (S(S(0)) + (S(S(0)) * 0)) (by M2)
+2. x = (S(S(0)) + (S(S(0)) * 0)) (by transitivity of equality)
+3. (S(S(0)) * 0) = 0 (by M1)
+4. (S(S(0)) + (S(S(0)) * 0)) = (S(S(0)) + 0) (by substitution)
+5. x = (S(S(0)) + 0) (by transitivity of equality)
+6. (S(S(0)) + 0) = S(S(0)) (by A1)
+7. x = S(S(0)) (by transitivity of equality)
+Therefore x = S(S(0)). QED.
+--------
+hypotheses: ['x = (y * S(0))']
+induction hypotheses: []
+conclusion: x = y
+Proposition. (x = (y * S(0))) => (x = y).
+Proof. Suppose x = (y * S(0)).
+1. (y * S(0)) = (y + (y * 0)) (by M2)
+2. x = (y + (y * 0)) (by transitivity of equality)
+3. (y * 0) = 0 (by M1)
+4. (y + (y * 0)) = (y + 0) (by substitution)
+5. x = (y + 0) (by transitivity of equality)
+6. (y + 0) = y (by A1)
+7. x = y (by transitivity of equality)
+Therefore x = y. QED.
+--------
+hypotheses: ['x = (y + 0)']
+induction hypotheses: []
+conclusion: x = y
+Proposition. (x = (y + 0)) => (x = y).
+Proof. Suppose x = (y + 0).
+1. (y + 0) = y (by A1)
+2. x = y (by transitivity of equality)
+Therefore x = y. QED.
+--------
+hypotheses: ['x = (y + S(0))']
+induction hypotheses: []
+conclusion: x = S(y)
+Proposition. (x = (y + S(0))) => (x = S(y)).
+Proof. Suppose x = (y + S(0)).
+1. (y + S(0)) = S((y + 0)) (by A2)
+2. x = S((y + 0)) (by transitivity of equality)
+3. (y + 0) = y (by A1)
+4. S((y + 0)) = S(y) (by substitution)
+5. x = S(y) (by transitivity of equality)
+Therefore x = S(y). QED.
+--------
+hypotheses: ['x = (S(S(S(0))) * S(S(S(0))))']
+induction hypotheses: []
+conclusion: x = S(S(S(S(S(S(S(S(S(0)))))))))
+Proposition. (x = (S(S(S(0))) * S(S(S(0))))) => (x = S(S(S(S(S(S(S(S(S(0)))))))))).
+Proof. Suppose x = (S(S(S(0))) * S(S(S(0)))).
+1. (S(S(S(0))) * S(S(S(0)))) = (S(S(S(0))) + (S(S(S(0))) * S(S(0)))) (by M2)
+2. x = (S(S(S(0))) + (S(S(S(0))) * S(S(0)))) (by transitivity of equality)
+3. (S(S(S(0))) * S(S(0))) = (S(S(S(0))) + (S(S(S(0))) * S(0))) (by M2)
+4. (S(S(S(0))) + (S(S(S(0))) * S(S(0)))) = (S(S(S(0))) + (S(S(S(0))) + (S(S(S(0))) * S(0)))) (by substitution)
+5. x = (S(S(S(0))) + (S(S(S(0))) + (S(S(S(0))) * S(0)))) (by transitivity of equality)
+6. (S(S(S(0))) * S(0)) = (S(S(S(0))) + (S(S(S(0))) * 0)) (by M2)
+7. (S(S(S(0))) + (S(S(S(0))) * S(0))) = (S(S(S(0))) + (S(S(S(0))) + (S(S(S(0))) * 0))) (by substitution)
+8. (S(S(S(0))) + (S(S(S(0))) + (S(S(S(0))) * S(0)))) = (S(S(S(0))) + (S(S(S(0))) + (S(S(S(0))) + (S(S(S(0))) * 0)))) (by substitution)
+9. x = (S(S(S(0))) + (S(S(S(0))) + (S(S(S(0))) + (S(S(S(0))) * 0)))) (by transitivity of equality)
+10. (S(S(S(0))) * 0) = 0 (by M1)
+11. (S(S(S(0))) + (S(S(S(0))) * 0)) = (S(S(S(0))) + 0) (by substitution)
+12. (S(S(S(0))) + (S(S(S(0))) + (S(S(S(0))) * 0))) = (S(S(S(0))) + (S(S(S(0))) + 0)) (by substitution)
+13. (S(S(S(0))) + (S(S(S(0))) + (S(S(S(0))) + (S(S(S(0))) * 0)))) = (S(S(S(0))) + (S(S(S(0))) + (S(S(S(0))) + 0))) (by substitution)
+14. x = (S(S(S(0))) + (S(S(S(0))) + (S(S(S(0))) + 0))) (by transitivity of equality)
+15. (S(S(S(0))) + 0) = S(S(S(0))) (by A1)
+16. (S(S(S(0))) + (S(S(S(0))) + 0)) = (S(S(S(0))) + S(S(S(0)))) (by substitution)
+17. (S(S(S(0))) + (S(S(S(0))) + (S(S(S(0))) + 0))) = (S(S(S(0))) + (S(S(S(0))) + S(S(S(0))))) (by substitution)
+18. x = (S(S(S(0))) + (S(S(S(0))) + S(S(S(0))))) (by transitivity of equality)
+19. (S(S(S(0))) + S(S(S(0)))) = S((S(S(S(0))) + S(S(0)))) (by A2)
+20. (S(S(S(0))) + (S(S(S(0))) + S(S(S(0))))) = (S(S(S(0))) + S((S(S(S(0))) + S(S(0))))) (by substitution)
+21. x = (S(S(S(0))) + S((S(S(S(0))) + S(S(0))))) (by transitivity of equality)
+22. (S(S(S(0))) + S((S(S(S(0))) + S(S(0))))) = S((S(S(S(0))) + (S(S(S(0))) + S(S(0))))) (by A2)
+23. x = S((S(S(S(0))) + (S(S(S(0))) + S(S(0))))) (by transitivity of equality)
+24. (S(S(S(0))) + S(S(0))) = S((S(S(S(0))) + S(0))) (by A2)
+25. S((S(S(S(0))) + S(S(0)))) = S(S((S(S(S(0))) + S(0)))) (by substitution)
+26. (S(S(S(0))) + S((S(S(S(0))) + S(S(0))))) = (S(S(S(0))) + S(S((S(S(S(0))) + S(0))))) (by substitution)
+27. x = (S(S(S(0))) + S(S((S(S(S(0))) + S(0))))) (by transitivity of equality)
+28. (S(S(S(0))) + S(S(0))) = S((S(S(S(0))) + S(0))) (by A2)
+29. (S(S(S(0))) + (S(S(S(0))) + S(S(0)))) = (S(S(S(0))) + S((S(S(S(0))) + S(0)))) (by substitution)
+30. S((S(S(S(0))) + (S(S(S(0))) + S(S(0))))) = S((S(S(S(0))) + S((S(S(S(0))) + S(0))))) (by substitution)
+31. x = S((S(S(S(0))) + S((S(S(S(0))) + S(0))))) (by transitivity of equality)
+32. (S(S(S(0))) + S(0)) = S((S(S(S(0))) + 0)) (by A2)
+33. S((S(S(S(0))) + S(0))) = S(S((S(S(S(0))) + 0))) (by substitution)
+34. S(S((S(S(S(0))) + S(0)))) = S(S(S((S(S(S(0))) + 0)))) (by substitution)
+35. (S(S(S(0))) + S(S((S(S(S(0))) + S(0))))) = (S(S(S(0))) + S(S(S((S(S(S(0))) + 0))))) (by substitution)
+36. x = (S(S(S(0))) + S(S(S((S(S(S(0))) + 0))))) (by transitivity of equality)
+37. (S(S(S(0))) + S((S(S(S(0))) + S(0)))) = S((S(S(S(0))) + (S(S(S(0))) + S(0)))) (by A2)
+38. S((S(S(S(0))) + S((S(S(S(0))) + S(0))))) = S(S((S(S(S(0))) + (S(S(S(0))) + S(0))))) (by substitution)
+39. x = S(S((S(S(S(0))) + (S(S(S(0))) + S(0))))) (by transitivity of equality)
+40. (S(S(S(0))) + S(0)) = S((S(S(S(0))) + 0)) (by A2)
+41. S((S(S(S(0))) + S(0))) = S(S((S(S(S(0))) + 0))) (by substitution)
+42. (S(S(S(0))) + S((S(S(S(0))) + S(0)))) = (S(S(S(0))) + S(S((S(S(S(0))) + 0)))) (by substitution)
+43. S((S(S(S(0))) + S((S(S(S(0))) + S(0))))) = S((S(S(S(0))) + S(S((S(S(S(0))) + 0))))) (by substitution)
+44. x = S((S(S(S(0))) + S(S((S(S(S(0))) + 0))))) (by transitivity of equality)
+45. (S(S(S(0))) + 0) = S(S(S(0))) (by A1)
+46. S((S(S(S(0))) + 0)) = S(S(S(S(0)))) (by substitution)
+47. S(S((S(S(S(0))) + 0))) = S(S(S(S(S(0))))) (by substitution)
+48. S(S(S((S(S(S(0))) + 0)))) = S(S(S(S(S(S(0)))))) (by substitution)
+49. (S(S(S(0))) + S(S(S((S(S(S(0))) + 0))))) = (S(S(S(0))) + S(S(S(S(S(S(0))))))) (by substitution)
+50. x = (S(S(S(0))) + S(S(S(S(S(S(0))))))) (by transitivity of equality)
+51. (S(S(S(0))) + S(0)) = S((S(S(S(0))) + 0)) (by A2)
+52. (S(S(S(0))) + (S(S(S(0))) + S(0))) = (S(S(S(0))) + S((S(S(S(0))) + 0))) (by substitution)
+53. S((S(S(S(0))) + (S(S(S(0))) + S(0)))) = S((S(S(S(0))) + S((S(S(S(0))) + 0)))) (by substitution)
+54. S(S((S(S(S(0))) + (S(S(S(0))) + S(0))))) = S(S((S(S(S(0))) + S((S(S(S(0))) + 0))))) (by substitution)
+55. x = S(S((S(S(S(0))) + S((S(S(S(0))) + 0))))) (by transitivity of equality)
+56. (S(S(S(0))) + 0) = S(S(S(0))) (by A1)
+57. S((S(S(S(0))) + 0)) = S(S(S(S(0)))) (by substitution)
+58. S(S((S(S(S(0))) + 0))) = S(S(S(S(S(0))))) (by substitution)
+59. (S(S(S(0))) + S(S((S(S(S(0))) + 0)))) = (S(S(S(0))) + S(S(S(S(S(0)))))) (by substitution)
+60. S((S(S(S(0))) + S(S((S(S(S(0))) + 0))))) = S((S(S(S(0))) + S(S(S(S(S(0))))))) (by substitution)
+61. x = S((S(S(S(0))) + S(S(S(S(S(0))))))) (by transitivity of equality)
+62. (S(S(S(0))) + S((S(S(S(0))) + 0))) = S((S(S(S(0))) + (S(S(S(0))) + 0))) (by A2)
+63. S((S(S(S(0))) + S((S(S(S(0))) + 0)))) = S(S((S(S(S(0))) + (S(S(S(0))) + 0)))) (by substitution)
+64. S(S((S(S(S(0))) + S((S(S(S(0))) + 0))))) = S(S(S((S(S(S(0))) + (S(S(S(0))) + 0))))) (by substitution)
+65. x = S(S(S((S(S(S(0))) + (S(S(S(0))) + 0))))) (by transitivity of equality)
+66. (S(S(S(0))) + 0) = S(S(S(0))) (by A1)
+67. S((S(S(S(0))) + 0)) = S(S(S(S(0)))) (by substitution)
+68. (S(S(S(0))) + S((S(S(S(0))) + 0))) = (S(S(S(0))) + S(S(S(S(0))))) (by substitution)
+69. S((S(S(S(0))) + S((S(S(S(0))) + 0)))) = S((S(S(S(0))) + S(S(S(S(0)))))) (by substitution)
+70. S(S((S(S(S(0))) + S((S(S(S(0))) + 0))))) = S(S((S(S(S(0))) + S(S(S(S(0))))))) (by substitution)
+71. x = S(S((S(S(S(0))) + S(S(S(S(0))))))) (by transitivity of equality)
+72. (S(S(S(0))) + 0) = S(S(S(0))) (by A1)
+73. (S(S(S(0))) + (S(S(S(0))) + 0)) = (S(S(S(0))) + S(S(S(0)))) (by substitution)
+74. S((S(S(S(0))) + (S(S(S(0))) + 0))) = S((S(S(S(0))) + S(S(S(0))))) (by substitution)
+75. S(S((S(S(S(0))) + (S(S(S(0))) + 0)))) = S(S((S(S(S(0))) + S(S(S(0)))))) (by substitution)
+76. S(S(S((S(S(S(0))) + (S(S(S(0))) + 0))))) = S(S(S((S(S(S(0))) + S(S(S(0))))))) (by substitution)
+77. x = S(S(S((S(S(S(0))) + S(S(S(0))))))) (by transitivity of equality)
+78. (S(S(S(0))) + S(S(S(0)))) = S((S(S(S(0))) + S(S(0)))) (by A2)
+79. S((S(S(S(0))) + S(S(S(0))))) = S(S((S(S(S(0))) + S(S(0))))) (by substitution)
+80. S(S((S(S(S(0))) + S(S(S(0)))))) = S(S(S((S(S(S(0))) + S(S(0)))))) (by substitution)
+81. S(S(S((S(S(S(0))) + S(S(S(0))))))) = S(S(S(S((S(S(S(0))) + S(S(0))))))) (by substitution)
+82. x = S(S(S(S((S(S(S(0))) + S(S(0))))))) (by transitivity of equality)
+83. (S(S(S(0))) + S(S(0))) = S((S(S(S(0))) + S(0))) (by A2)
+84. S((S(S(S(0))) + S(S(0)))) = S(S((S(S(S(0))) + S(0)))) (by substitution)
+85. S(S((S(S(S(0))) + S(S(0))))) = S(S(S((S(S(S(0))) + S(0))))) (by substitution)
+86. S(S(S((S(S(S(0))) + S(S(0)))))) = S(S(S(S((S(S(S(0))) + S(0)))))) (by substitution)
+87. S(S(S(S((S(S(S(0))) + S(S(0))))))) = S(S(S(S(S((S(S(S(0))) + S(0))))))) (by substitution)
+88. x = S(S(S(S(S((S(S(S(0))) + S(0))))))) (by transitivity of equality)
+89. (S(S(S(0))) + S(0)) = S((S(S(S(0))) + 0)) (by A2)
+90. S((S(S(S(0))) + S(0))) = S(S((S(S(S(0))) + 0))) (by substitution)
+91. S(S((S(S(S(0))) + S(0)))) = S(S(S((S(S(S(0))) + 0)))) (by substitution)
+92. S(S(S((S(S(S(0))) + S(0))))) = S(S(S(S((S(S(S(0))) + 0))))) (by substitution)
+93. S(S(S(S((S(S(S(0))) + S(0)))))) = S(S(S(S(S((S(S(S(0))) + 0)))))) (by substitution)
+94. S(S(S(S(S((S(S(S(0))) + S(0))))))) = S(S(S(S(S(S((S(S(S(0))) + 0))))))) (by substitution)
+95. x = S(S(S(S(S(S((S(S(S(0))) + 0))))))) (by transitivity of equality)
+96. (S(S(S(0))) + 0) = S(S(S(0))) (by A1)
+97. S((S(S(S(0))) + 0)) = S(S(S(S(0)))) (by substitution)
+98. S(S((S(S(S(0))) + 0))) = S(S(S(S(S(0))))) (by substitution)
+99. S(S(S((S(S(S(0))) + 0)))) = S(S(S(S(S(S(0)))))) (by substitution)
+100. S(S(S(S((S(S(S(0))) + 0))))) = S(S(S(S(S(S(S(0))))))) (by substitution)
+101. S(S(S(S(S((S(S(S(0))) + 0)))))) = S(S(S(S(S(S(S(S(0)))))))) (by substitution)
+102. S(S(S(S(S(S((S(S(S(0))) + 0))))))) = S(S(S(S(S(S(S(S(S(0))))))))) (by substitution)
+103. x = S(S(S(S(S(S(S(S(S(0))))))))) (by transitivity of equality)
+Therefore x = S(S(S(S(S(S(S(S(S(0))))))))). QED.
+--------
+hypotheses: ['x = (0 + y)']
+induction hypotheses: []
+conclusion: x = y
+Proposition. (x = (0 + y)) => (x = y).
+Proof. Suppose x = (0 + y).
+Therefore x = y. QED.
+['x = (0 + y)']
+Trying induction on x
+Proving induction on x
+substituted: ['0 = (0 + y)']
+hypotheses: ['0 = (0 + y)']
+induction hypotheses: []
+conclusion: 0 = y
+Proposition. (0 = (0 + y)) => (0 = y).
+Proof. Suppose 0 = (0 + y).
+Therefore 0 = y. QED.
+['0 = (0 + y)']
+Trying induction on y
+Proving induction on y
+substituted: ['0 = (0 + 0)']
+hypotheses: ['0 = (0 + 0)']
+induction hypotheses: []
+conclusion: 0 = 0
+Base case: Proposition. (0 = (0 + 0)) => (0 = 0).
+Proof. Suppose 0 = (0 + 0).
+1. 0 = 0 (by reflexivity of equality)
+Therefore 0 = 0. QED.
+hypotheses: ['0 = (0 + S(y))']
+induction hypotheses: ['there exists a y such that (0 = (0 + y)) => (0 = y)']
+conclusion: 0 = S(y)
+0 = (0 + S(y))
+0 = 0
+0 = (0 + S(y)) = S((0 + y))
+(0 + S(y)) = (0 + S(y))
+0 = 0
+S(y) = S(y)
+y = y
+0 = (0 + S(y)) = S((0 + y))
+S((0 + y)) = S((0 + y))
+(0 + y) = (0 + y)
+Huzzah!
+0 = 0
+y = y
+Proposition. (0 = (0 + S(y))) => (0 = S(y)).
+Proof. Suppose 0 = (0 + S(y)).
+1. (0 + S(y)) = S((0 + y)) (by A2)
+2. 0 = S((0 + y)) (by transitivity of equality)
+Therefore 0 = S(y). QED.
+['0 = (0 + S(y))']
+Trying induction on y
+Proving induction on y
+substituted: ['0 = (0 + S(0))']
+hypotheses: ['0 = (0 + S(0))']
+induction hypotheses: []
+conclusion: 0 = S(0)
+Base case: Proposition. (0 = (0 + S(0))) => (0 = S(0)).
+Proof. Suppose 0 = (0 + S(0)).
+1. (0 + S(0)) = S((0 + 0)) (by A2)
+2. 0 = S((0 + 0)) (by transitivity of equality)
+3. (0 + 0) = 0 (by A1)
+4. S((0 + 0)) = S(0) (by substitution)
+5. 0 = S(0) (by transitivity of equality)
+Therefore 0 = S(0). QED.
+hypotheses: ['0 = (0 + S(S(y)))']
+induction hypotheses: ['there exists a y such that (0 = (0 + y)) => (0 = y)', 'there exists a y such that (0 = (0 + S(y))) => (0 = S(y))']
+conclusion: 0 = S(S(y))
+0 = (0 + S(S(y)))
+0 = (0 + S(S(y)))
+0 = 0
+0 = 0
+0 = (0 + S(S(y))) = S((0 + S(y)))
+0 = (0 + S(S(y))) = S((0 + S(y)))
+(0 + S(S(y))) = (0 + S(S(y)))
+(0 + S(S(y))) = (0 + S(S(y)))
+0 = 0
+0 = 0
+S(S(y)) = S(S(y))
+S(S(y)) = S(S(y))
+S(y) = S(y)
+S(y) = S(y)
+y = y
+y = y
+0 = (0 + S(S(y))) = S((0 + S(y))) = S(S((0 + y)))
+0 = (0 + S(S(y))) = S((0 + S(y))) = S(S((0 + y)))
+S((0 + S(y))) = S((0 + S(y)))
+S((0 + S(y))) = S((0 + S(y)))
+(0 + S(y)) = (0 + S(y))
+(0 + S(y)) = (0 + S(y))
+0 = 0
+0 = 0
+S(y) = S(y)
+S(y) = S(y)
+y = y
+y = y
+0 = (0 + S(S(y))) = S((0 + S(y))) = S(S((0 + y)))
+0 = (0 + S(S(y))) = S((0 + S(y))) = S(S((0 + y)))
+S(S((0 + y))) = S(S((0 + y)))
+S(S((0 + y))) = S(S((0 + y)))
+S((0 + y)) = S((0 + y))
+S((0 + y)) = S((0 + y))
+(0 + y) = (0 + y)
+Huzzah!
+(0 + y) = (0 + y)
+Huzzah!
+0 = 0
+0 = 0
+y = y
+y = y
+Proposition. (0 = (0 + S(S(y)))) => (0 = S(S(y))).
+Proof. Suppose 0 = (0 + S(S(y))).
+1. (0 + S(S(y))) = S((0 + S(y))) (by A2)
+2. 0 = S((0 + S(y))) (by transitivity of equality)
+3. (0 + S(y)) = S((0 + y)) (by A2)
+4. S((0 + S(y))) = S(S((0 + y))) (by substitution)
+5. 0 = S(S((0 + y))) (by transitivity of equality)
+Therefore 0 = S(S(y)). QED.
+['0 = (0 + S(S(y)))']
+Trying induction on y
+Proving induction on y
+substituted: ['0 = (0 + S(S(0)))']
+hypotheses: ['0 = (0 + S(S(0)))']
+induction hypotheses: []
+conclusion: 0 = S(S(0))
+Base case: Proposition. (0 = (0 + S(S(0)))) => (0 = S(S(0))).
+Proof. Suppose 0 = (0 + S(S(0))).
+1. (0 + S(S(0))) = S((0 + S(0))) (by A2)
+2. 0 = S((0 + S(0))) (by transitivity of equality)
+3. (0 + S(0)) = S((0 + 0)) (by A2)
+4. S((0 + S(0))) = S(S((0 + 0))) (by substitution)
+5. 0 = S(S((0 + 0))) (by transitivity of equality)
+6. (0 + 0) = 0 (by A1)
+7. S((0 + 0)) = S(0) (by substitution)
+8. S(S((0 + 0))) = S(S(0)) (by substitution)
+9. 0 = S(S(0)) (by transitivity of equality)
+Therefore 0 = S(S(0)). QED.
+hypotheses: ['0 = (0 + S(S(S(y))))']
+induction hypotheses: ['there exists a y such that (0 = (0 + y)) => (0 = y)', 'there exists a y such that (0 = (0 + S(y))) => (0 = S(y))', 'there exists a y such that (0 = (0 + S(S(y)))) => (0 = S(S(y)))']
+conclusion: 0 = S(S(S(y)))
+0 = (0 + S(S(S(y))))
+0 = (0 + S(S(S(y))))
+0 = (0 + S(S(S(y))))
+0 = 0
+0 = 0
+0 = 0
+0 = (0 + S(S(S(y)))) = S((0 + S(S(y))))
+0 = (0 + S(S(S(y)))) = S((0 + S(S(y))))
+0 = (0 + S(S(S(y)))) = S((0 + S(S(y))))
+(0 + S(S(S(y)))) = (0 + S(S(S(y))))
+(0 + S(S(S(y)))) = (0 + S(S(S(y))))
+(0 + S(S(S(y)))) = (0 + S(S(S(y))))
+0 = 0
+0 = 0
+0 = 0
+S(S(S(y))) = S(S(S(y)))
+S(S(S(y))) = S(S(S(y)))
+S(S(S(y))) = S(S(S(y)))
+S(S(y)) = S(S(y))
+S(S(y)) = S(S(y))
+S(S(y)) = S(S(y))
+S(y) = S(y)
+S(y) = S(y)
+S(y) = S(y)
+y = y
+y = y
+y = y
+0 = (0 + S(S(S(y)))) = S((0 + S(S(y)))) = S(S((0 + S(y))))
+0 = (0 + S(S(S(y)))) = S((0 + S(S(y)))) = S(S((0 + S(y))))
+0 = (0 + S(S(S(y)))) = S((0 + S(S(y)))) = S(S((0 + S(y))))
+S((0 + S(S(y)))) = S((0 + S(S(y))))
+S((0 + S(S(y)))) = S((0 + S(S(y))))
+S((0 + S(S(y)))) = S((0 + S(S(y))))
+(0 + S(S(y))) = (0 + S(S(y)))
+(0 + S(S(y))) = (0 + S(S(y)))
+(0 + S(S(y))) = (0 + S(S(y)))
+0 = 0
+0 = 0
+0 = 0
+S(S(y)) = S(S(y))
+S(S(y)) = S(S(y))
+S(S(y)) = S(S(y))
+S(y) = S(y)
+S(y) = S(y)
+S(y) = S(y)
+y = y
+y = y
+y = y
+0 = (0 + S(S(S(y)))) = S((0 + S(S(y)))) = S(S((0 + S(y)))) = S(S(S((0 + y))))
+0 = (0 + S(S(S(y)))) = S((0 + S(S(y)))) = S(S((0 + S(y)))) = S(S(S((0 + y))))
+0 = (0 + S(S(S(y)))) = S((0 + S(S(y)))) = S(S((0 + S(y)))) = S(S(S((0 + y))))
+S(S((0 + S(y)))) = S(S((0 + S(y))))
+S(S((0 + S(y)))) = S(S((0 + S(y))))
+S(S((0 + S(y)))) = S(S((0 + S(y))))
+S((0 + S(y))) = S((0 + S(y)))
+S((0 + S(y))) = S((0 + S(y)))
+S((0 + S(y))) = S((0 + S(y)))
+(0 + S(y)) = (0 + S(y))
+(0 + S(y)) = (0 + S(y))
+(0 + S(y)) = (0 + S(y))
+0 = 0
+0 = 0
+0 = 0
+S(y) = S(y)
+S(y) = S(y)
+S(y) = S(y)
+y = y
+y = y
+y = y
+0 = (0 + S(S(S(y)))) = S((0 + S(S(y)))) = S(S((0 + S(y)))) = S(S(S((0 + y))))
+0 = (0 + S(S(S(y)))) = S((0 + S(S(y)))) = S(S((0 + S(y)))) = S(S(S((0 + y))))
+0 = (0 + S(S(S(y)))) = S((0 + S(S(y)))) = S(S((0 + S(y)))) = S(S(S((0 + y))))
+S(S(S((0 + y)))) = S(S(S((0 + y))))
+S(S(S((0 + y)))) = S(S(S((0 + y))))
+S(S(S((0 + y)))) = S(S(S((0 + y))))
+S(S((0 + y))) = S(S((0 + y)))
+S(S((0 + y))) = S(S((0 + y)))
+S(S((0 + y))) = S(S((0 + y)))
+S((0 + y)) = S((0 + y))
+S((0 + y)) = S((0 + y))
+S((0 + y)) = S((0 + y))
+(0 + y) = (0 + y)
+Huzzah!
+(0 + y) = (0 + y)
+Huzzah!
+(0 + y) = (0 + y)
+Huzzah!
+0 = 0
+0 = 0
+0 = 0
+y = y
+y = y
+y = y
+Proposition. (0 = (0 + S(S(S(y))))) => (0 = S(S(S(y)))).
+Proof. Suppose 0 = (0 + S(S(S(y)))).
+1. (0 + S(S(S(y)))) = S((0 + S(S(y)))) (by A2)
+2. 0 = S((0 + S(S(y)))) (by transitivity of equality)
+3. (0 + S(S(y))) = S((0 + S(y))) (by A2)
+4. S((0 + S(S(y)))) = S(S((0 + S(y)))) (by substitution)
+5. 0 = S(S((0 + S(y)))) (by transitivity of equality)
+6. (0 + S(y)) = S((0 + y)) (by A2)
+7. S((0 + S(y))) = S(S((0 + y))) (by substitution)
+8. S(S((0 + S(y)))) = S(S(S((0 + y)))) (by substitution)
+9. 0 = S(S(S((0 + y)))) (by transitivity of equality)
+Therefore 0 = S(S(S(y))). QED.
+['0 = (0 + S(S(S(y))))']
+Trying induction on y
+Proving induction on y
+substituted: ['0 = (0 + S(S(S(0))))']
+hypotheses: ['0 = (0 + S(S(S(0))))']
+induction hypotheses: []
+conclusion: 0 = S(S(S(0)))
+Base case: Proposition. (0 = (0 + S(S(S(0))))) => (0 = S(S(S(0)))).
+Proof. Suppose 0 = (0 + S(S(S(0)))).
+1. (0 + S(S(S(0)))) = S((0 + S(S(0)))) (by A2)
+2. 0 = S((0 + S(S(0)))) (by transitivity of equality)
+3. (0 + S(S(0))) = S((0 + S(0))) (by A2)
+4. S((0 + S(S(0)))) = S(S((0 + S(0)))) (by substitution)
+5. 0 = S(S((0 + S(0)))) (by transitivity of equality)
+6. (0 + S(0)) = S((0 + 0)) (by A2)
+7. S((0 + S(0))) = S(S((0 + 0))) (by substitution)
+8. S(S((0 + S(0)))) = S(S(S((0 + 0)))) (by substitution)
+9. 0 = S(S(S((0 + 0)))) (by transitivity of equality)
+10. (0 + 0) = 0 (by A1)
+11. S((0 + 0)) = S(0) (by substitution)
+12. S(S((0 + 0))) = S(S(0)) (by substitution)
+13. S(S(S((0 + 0)))) = S(S(S(0))) (by substitution)
+14. 0 = S(S(S(0))) (by transitivity of equality)
+Therefore 0 = S(S(S(0))). QED.
+hypotheses: ['0 = (0 + S(S(S(S(y)))))']
+induction hypotheses: ['there exists a y such that (0 = (0 + y)) => (0 = y)', 'there exists a y such that (0 = (0 + S(y))) => (0 = S(y))', 'there exists a y such that (0 = (0 + S(S(y)))) => (0 = S(S(y)))', 'there exists a y such that (0 = (0 + S(S(S(y))))) => (0 = S(S(S(y))))']
+conclusion: 0 = S(S(S(S(y))))
+0 = (0 + S(S(S(S(y)))))
+0 = (0 + S(S(S(S(y)))))
+0 = (0 + S(S(S(S(y)))))
+0 = (0 + S(S(S(S(y)))))
+0 = 0
+0 = 0
+0 = 0
+0 = 0
+0 = (0 + S(S(S(S(y))))) = S((0 + S(S(S(y)))))
+0 = (0 + S(S(S(S(y))))) = S((0 + S(S(S(y)))))
+0 = (0 + S(S(S(S(y))))) = S((0 + S(S(S(y)))))
+0 = (0 + S(S(S(S(y))))) = S((0 + S(S(S(y)))))
+(0 + S(S(S(S(y))))) = (0 + S(S(S(S(y)))))
+(0 + S(S(S(S(y))))) = (0 + S(S(S(S(y)))))
+(0 + S(S(S(S(y))))) = (0 + S(S(S(S(y)))))
+(0 + S(S(S(S(y))))) = (0 + S(S(S(S(y)))))
+0 = 0
+0 = 0
+0 = 0
+0 = 0
+S(S(S(S(y)))) = S(S(S(S(y))))
+S(S(S(S(y)))) = S(S(S(S(y))))
+S(S(S(S(y)))) = S(S(S(S(y))))
+S(S(S(S(y)))) = S(S(S(S(y))))
+S(S(S(y))) = S(S(S(y)))
+S(S(S(y))) = S(S(S(y)))
+S(S(S(y))) = S(S(S(y)))
+S(S(S(y))) = S(S(S(y)))
+S(S(y)) = S(S(y))
+S(S(y)) = S(S(y))
+S(S(y)) = S(S(y))
+S(S(y)) = S(S(y))
+S(y) = S(y)
+S(y) = S(y)
+S(y) = S(y)
+S(y) = S(y)
+y = y
+y = y
+y = y
+y = y
+0 = (0 + S(S(S(S(y))))) = S((0 + S(S(S(y))))) = S(S((0 + S(S(y)))))
+0 = (0 + S(S(S(S(y))))) = S((0 + S(S(S(y))))) = S(S((0 + S(S(y)))))
+0 = (0 + S(S(S(S(y))))) = S((0 + S(S(S(y))))) = S(S((0 + S(S(y)))))
+0 = (0 + S(S(S(S(y))))) = S((0 + S(S(S(y))))) = S(S((0 + S(S(y)))))
+S((0 + S(S(S(y))))) = S((0 + S(S(S(y)))))
+S((0 + S(S(S(y))))) = S((0 + S(S(S(y)))))
+S((0 + S(S(S(y))))) = S((0 + S(S(S(y)))))
+S((0 + S(S(S(y))))) = S((0 + S(S(S(y)))))
+(0 + S(S(S(y)))) = (0 + S(S(S(y))))
+(0 + S(S(S(y)))) = (0 + S(S(S(y))))
+(0 + S(S(S(y)))) = (0 + S(S(S(y))))
+(0 + S(S(S(y)))) = (0 + S(S(S(y))))
+0 = 0
+0 = 0
+0 = 0
+0 = 0
+S(S(S(y))) = S(S(S(y)))
+S(S(S(y))) = S(S(S(y)))
+S(S(S(y))) = S(S(S(y)))
+S(S(S(y))) = S(S(S(y)))
+S(S(y)) = S(S(y))
+S(S(y)) = S(S(y))
+S(S(y)) = S(S(y))
+S(S(y)) = S(S(y))
+S(y) = S(y)
+S(y) = S(y)
+S(y) = S(y)
+S(y) = S(y)
+y = y
+y = y
+y = y
+y = y
+0 = (0 + S(S(S(S(y))))) = S((0 + S(S(S(y))))) = S(S((0 + S(S(y))))) = S(S(S((0 + S(y)))))
+0 = (0 + S(S(S(S(y))))) = S((0 + S(S(S(y))))) = S(S((0 + S(S(y))))) = S(S(S((0 + S(y)))))
+0 = (0 + S(S(S(S(y))))) = S((0 + S(S(S(y))))) = S(S((0 + S(S(y))))) = S(S(S((0 + S(y)))))
+0 = (0 + S(S(S(S(y))))) = S((0 + S(S(S(y))))) = S(S((0 + S(S(y))))) = S(S(S((0 + S(y)))))
+S(S((0 + S(S(y))))) = S(S((0 + S(S(y)))))
+S(S((0 + S(S(y))))) = S(S((0 + S(S(y)))))
+S(S((0 + S(S(y))))) = S(S((0 + S(S(y)))))
+S(S((0 + S(S(y))))) = S(S((0 + S(S(y)))))
+S((0 + S(S(y)))) = S((0 + S(S(y))))
+S((0 + S(S(y)))) = S((0 + S(S(y))))
+S((0 + S(S(y)))) = S((0 + S(S(y))))
+S((0 + S(S(y)))) = S((0 + S(S(y))))
+(0 + S(S(y))) = (0 + S(S(y)))
+(0 + S(S(y))) = (0 + S(S(y)))
+(0 + S(S(y))) = (0 + S(S(y)))
+(0 + S(S(y))) = (0 + S(S(y)))
+0 = 0
+0 = 0
+0 = 0
+0 = 0
+S(S(y)) = S(S(y))
+S(S(y)) = S(S(y))
+S(S(y)) = S(S(y))
+S(S(y)) = S(S(y))
+S(y) = S(y)
+S(y) = S(y)
+S(y) = S(y)
+S(y) = S(y)
+y = y
+y = y
+y = y
+y = y
+0 = (0 + S(S(S(S(y))))) = S((0 + S(S(S(y))))) = S(S((0 + S(S(y))))) = S(S(S((0 + S(y))))) = S(S(S(S((0 + y)))))
+0 = (0 + S(S(S(S(y))))) = S((0 + S(S(S(y))))) = S(S((0 + S(S(y))))) = S(S(S((0 + S(y))))) = S(S(S(S((0 + y)))))
+0 = (0 + S(S(S(S(y))))) = S((0 + S(S(S(y))))) = S(S((0 + S(S(y))))) = S(S(S((0 + S(y))))) = S(S(S(S((0 + y)))))
+0 = (0 + S(S(S(S(y))))) = S((0 + S(S(S(y))))) = S(S((0 + S(S(y))))) = S(S(S((0 + S(y))))) = S(S(S(S((0 + y)))))
+S(S(S((0 + S(y))))) = S(S(S((0 + S(y)))))
+S(S(S((0 + S(y))))) = S(S(S((0 + S(y)))))
+S(S(S((0 + S(y))))) = S(S(S((0 + S(y)))))
+S(S(S((0 + S(y))))) = S(S(S((0 + S(y)))))
+S(S((0 + S(y)))) = S(S((0 + S(y))))
+S(S((0 + S(y)))) = S(S((0 + S(y))))
+S(S((0 + S(y)))) = S(S((0 + S(y))))
+S(S((0 + S(y)))) = S(S((0 + S(y))))
+S((0 + S(y))) = S((0 + S(y)))
+S((0 + S(y))) = S((0 + S(y)))
+S((0 + S(y))) = S((0 + S(y)))
+S((0 + S(y))) = S((0 + S(y)))
+(0 + S(y)) = (0 + S(y))
+(0 + S(y)) = (0 + S(y))
+(0 + S(y)) = (0 + S(y))
+(0 + S(y)) = (0 + S(y))
+0 = 0
+0 = 0
+0 = 0
+0 = 0
+S(y) = S(y)
+S(y) = S(y)
+S(y) = S(y)
+S(y) = S(y)
+y = y
+y = y
+y = y
+y = y
+0 = (0 + S(S(S(S(y))))) = S((0 + S(S(S(y))))) = S(S((0 + S(S(y))))) = S(S(S((0 + S(y))))) = S(S(S(S((0 + y)))))
+0 = (0 + S(S(S(S(y))))) = S((0 + S(S(S(y))))) = S(S((0 + S(S(y))))) = S(S(S((0 + S(y))))) = S(S(S(S((0 + y)))))
+0 = (0 + S(S(S(S(y))))) = S((0 + S(S(S(y))))) = S(S((0 + S(S(y))))) = S(S(S((0 + S(y))))) = S(S(S(S((0 + y)))))
+0 = (0 + S(S(S(S(y))))) = S((0 + S(S(S(y))))) = S(S((0 + S(S(y))))) = S(S(S((0 + S(y))))) = S(S(S(S((0 + y)))))
+S(S(S(S((0 + y))))) = S(S(S(S((0 + y)))))
+S(S(S(S((0 + y))))) = S(S(S(S((0 + y)))))
+S(S(S(S((0 + y))))) = S(S(S(S((0 + y)))))
+S(S(S(S((0 + y))))) = S(S(S(S((0 + y)))))
+S(S(S((0 + y)))) = S(S(S((0 + y))))
+S(S(S((0 + y)))) = S(S(S((0 + y))))
+S(S(S((0 + y)))) = S(S(S((0 + y))))
+S(S(S((0 + y)))) = S(S(S((0 + y))))
+S(S((0 + y))) = S(S((0 + y)))
+S(S((0 + y))) = S(S((0 + y)))
+S(S((0 + y))) = S(S((0 + y)))
+S(S((0 + y))) = S(S((0 + y)))
+S((0 + y)) = S((0 + y))
+S((0 + y)) = S((0 + y))
+S((0 + y)) = S((0 + y))
+S((0 + y)) = S((0 + y))
+(0 + y) = (0 + y)
+Huzzah!
+(0 + y) = (0 + y)
+Huzzah!
+(0 + y) = (0 + y)
+Huzzah!
+(0 + y) = (0 + y)
+Huzzah!
+0 = 0
+0 = 0
+0 = 0
+0 = 0
+y = y
+y = y
+y = y
+y = y
+Proposition. (0 = (0 + S(S(S(S(y)))))) => (0 = S(S(S(S(y))))).
+Proof. Suppose 0 = (0 + S(S(S(S(y))))).
+1. (0 + S(S(S(S(y))))) = S((0 + S(S(S(y))))) (by A2)
+2. 0 = S((0 + S(S(S(y))))) (by transitivity of equality)
+3. (0 + S(S(S(y)))) = S((0 + S(S(y)))) (by A2)
+4. S((0 + S(S(S(y))))) = S(S((0 + S(S(y))))) (by substitution)
+5. 0 = S(S((0 + S(S(y))))) (by transitivity of equality)
+6. (0 + S(S(y))) = S((0 + S(y))) (by A2)
+7. S((0 + S(S(y)))) = S(S((0 + S(y)))) (by substitution)
+8. S(S((0 + S(S(y))))) = S(S(S((0 + S(y))))) (by substitution)
+9. 0 = S(S(S((0 + S(y))))) (by transitivity of equality)
+10. (0 + S(y)) = S((0 + y)) (by A2)
+11. S((0 + S(y))) = S(S((0 + y))) (by substitution)
+12. S(S((0 + S(y)))) = S(S(S((0 + y)))) (by substitution)
+13. S(S(S((0 + S(y))))) = S(S(S(S((0 + y))))) (by substitution)
+14. 0 = S(S(S(S((0 + y))))) (by transitivity of equality)
+Therefore 0 = S(S(S(S(y)))). QED.
+['0 = (0 + S(S(S(S(y)))))']
+Trying induction on y
+Proving induction on y
+substituted: ['0 = (0 + S(S(S(S(0)))))']
+hypotheses: ['0 = (0 + S(S(S(S(0)))))']
+induction hypotheses: []
+conclusion: 0 = S(S(S(S(0))))
+Base case: Proposition. (0 = (0 + S(S(S(S(0)))))) => (0 = S(S(S(S(0))))).
+Proof. Suppose 0 = (0 + S(S(S(S(0))))).
+1. (0 + S(S(S(S(0))))) = S((0 + S(S(S(0))))) (by A2)
+2. 0 = S((0 + S(S(S(0))))) (by transitivity of equality)
+3. (0 + S(S(S(0)))) = S((0 + S(S(0)))) (by A2)
+4. S((0 + S(S(S(0))))) = S(S((0 + S(S(0))))) (by substitution)
+5. 0 = S(S((0 + S(S(0))))) (by transitivity of equality)
+6. (0 + S(S(0))) = S((0 + S(0))) (by A2)
+7. S((0 + S(S(0)))) = S(S((0 + S(0)))) (by substitution)
+8. S(S((0 + S(S(0))))) = S(S(S((0 + S(0))))) (by substitution)
+9. 0 = S(S(S((0 + S(0))))) (by transitivity of equality)
+10. (0 + S(0)) = S((0 + 0)) (by A2)
+11. S((0 + S(0))) = S(S((0 + 0))) (by substitution)
+12. S(S((0 + S(0)))) = S(S(S((0 + 0)))) (by substitution)
+13. S(S(S((0 + S(0))))) = S(S(S(S((0 + 0))))) (by substitution)
+14. 0 = S(S(S(S((0 + 0))))) (by transitivity of equality)
+15. (0 + 0) = 0 (by A1)
+16. S((0 + 0)) = S(0) (by substitution)
+17. S(S((0 + 0))) = S(S(0)) (by substitution)
+18. S(S(S((0 + 0)))) = S(S(S(0))) (by substitution)
+19. S(S(S(S((0 + 0))))) = S(S(S(S(0)))) (by substitution)
+20. 0 = S(S(S(S(0)))) (by transitivity of equality)
+Therefore 0 = S(S(S(S(0)))). QED.
+hypotheses: ['0 = (0 + S(S(S(S(S(y))))))']
+induction hypotheses: ['there exists a y such that (0 = (0 + y)) => (0 = y)', 'there exists a y such that (0 = (0 + S(y))) => (0 = S(y))', 'there exists a y such that (0 = (0 + S(S(y)))) => (0 = S(S(y)))', 'there exists a y such that (0 = (0 + S(S(S(y))))) => (0 = S(S(S(y))))', 'there exists a y such that (0 = (0 + S(S(S(S(y)))))) => (0 = S(S(S(S(y)))))']
+conclusion: 0 = S(S(S(S(S(y)))))
+0 = (0 + S(S(S(S(S(y))))))
+0 = (0 + S(S(S(S(S(y))))))
+0 = (0 + S(S(S(S(S(y))))))
+0 = (0 + S(S(S(S(S(y))))))
+0 = (0 + S(S(S(S(S(y))))))
+0 = 0
+0 = 0
+0 = 0
+0 = 0
+0 = 0
+0 = (0 + S(S(S(S(S(y)))))) = S((0 + S(S(S(S(y))))))
+0 = (0 + S(S(S(S(S(y)))))) = S((0 + S(S(S(S(y))))))
+0 = (0 + S(S(S(S(S(y)))))) = S((0 + S(S(S(S(y))))))
+0 = (0 + S(S(S(S(S(y)))))) = S((0 + S(S(S(S(y))))))
+0 = (0 + S(S(S(S(S(y)))))) = S((0 + S(S(S(S(y))))))
+(0 + S(S(S(S(S(y)))))) = (0 + S(S(S(S(S(y))))))
+(0 + S(S(S(S(S(y)))))) = (0 + S(S(S(S(S(y))))))
+(0 + S(S(S(S(S(y)))))) = (0 + S(S(S(S(S(y))))))
+(0 + S(S(S(S(S(y)))))) = (0 + S(S(S(S(S(y))))))
+(0 + S(S(S(S(S(y)))))) = (0 + S(S(S(S(S(y))))))
+0 = 0
+0 = 0
+0 = 0
+0 = 0
+0 = 0
+S(S(S(S(S(y))))) = S(S(S(S(S(y)))))
+S(S(S(S(S(y))))) = S(S(S(S(S(y)))))
+S(S(S(S(S(y))))) = S(S(S(S(S(y)))))
+S(S(S(S(S(y))))) = S(S(S(S(S(y)))))
+S(S(S(S(S(y))))) = S(S(S(S(S(y)))))
+S(S(S(S(y)))) = S(S(S(S(y))))
+S(S(S(S(y)))) = S(S(S(S(y))))
+S(S(S(S(y)))) = S(S(S(S(y))))
+S(S(S(S(y)))) = S(S(S(S(y))))
+S(S(S(S(y)))) = S(S(S(S(y))))
+S(S(S(y))) = S(S(S(y)))
+S(S(S(y))) = S(S(S(y)))
+S(S(S(y))) = S(S(S(y)))
+S(S(S(y))) = S(S(S(y)))
+S(S(S(y))) = S(S(S(y)))
+S(S(y)) = S(S(y))
+S(S(y)) = S(S(y))
+S(S(y)) = S(S(y))
+S(S(y)) = S(S(y))
+S(S(y)) = S(S(y))
+S(y) = S(y)
+S(y) = S(y)
+S(y) = S(y)
+S(y) = S(y)
+S(y) = S(y)
+y = y
+y = y
+y = y
+y = y
+y = y
+0 = (0 + S(S(S(S(S(y)))))) = S((0 + S(S(S(S(y)))))) = S(S((0 + S(S(S(y))))))
+0 = (0 + S(S(S(S(S(y)))))) = S((0 + S(S(S(S(y)))))) = S(S((0 + S(S(S(y))))))
+0 = (0 + S(S(S(S(S(y)))))) = S((0 + S(S(S(S(y)))))) = S(S((0 + S(S(S(y))))))
+0 = (0 + S(S(S(S(S(y)))))) = S((0 + S(S(S(S(y)))))) = S(S((0 + S(S(S(y))))))
+0 = (0 + S(S(S(S(S(y)))))) = S((0 + S(S(S(S(y)))))) = S(S((0 + S(S(S(y))))))
+S((0 + S(S(S(S(y)))))) = S((0 + S(S(S(S(y))))))
+S((0 + S(S(S(S(y)))))) = S((0 + S(S(S(S(y))))))
+S((0 + S(S(S(S(y)))))) = S((0 + S(S(S(S(y))))))
+S((0 + S(S(S(S(y)))))) = S((0 + S(S(S(S(y))))))
+S((0 + S(S(S(S(y)))))) = S((0 + S(S(S(S(y))))))
+(0 + S(S(S(S(y))))) = (0 + S(S(S(S(y)))))
+(0 + S(S(S(S(y))))) = (0 + S(S(S(S(y)))))
+(0 + S(S(S(S(y))))) = (0 + S(S(S(S(y)))))
+(0 + S(S(S(S(y))))) = (0 + S(S(S(S(y)))))
+(0 + S(S(S(S(y))))) = (0 + S(S(S(S(y)))))
+0 = 0
+0 = 0
+0 = 0
+0 = 0
+0 = 0
+S(S(S(S(y)))) = S(S(S(S(y))))
+S(S(S(S(y)))) = S(S(S(S(y))))
+S(S(S(S(y)))) = S(S(S(S(y))))
+S(S(S(S(y)))) = S(S(S(S(y))))
+S(S(S(S(y)))) = S(S(S(S(y))))
+S(S(S(y))) = S(S(S(y)))
+S(S(S(y))) = S(S(S(y)))
+S(S(S(y))) = S(S(S(y)))
+S(S(S(y))) = S(S(S(y)))
+S(S(S(y))) = S(S(S(y)))
+S(S(y)) = S(S(y))
+S(S(y)) = S(S(y))
+S(S(y)) = S(S(y))
+S(S(y)) = S(S(y))
+S(S(y)) = S(S(y))
+S(y) = S(y)
+S(y) = S(y)
+S(y) = S(y)
+S(y) = S(y)
+S(y) = S(y)
+y = y
+y = y
+y = y
+y = y
+y = y
+0 = (0 + S(S(S(S(S(y)))))) = S((0 + S(S(S(S(y)))))) = S(S((0 + S(S(S(y)))))) = S(S(S((0 + S(S(y))))))
+0 = (0 + S(S(S(S(S(y)))))) = S((0 + S(S(S(S(y)))))) = S(S((0 + S(S(S(y)))))) = S(S(S((0 + S(S(y))))))
+0 = (0 + S(S(S(S(S(y)))))) = S((0 + S(S(S(S(y)))))) = S(S((0 + S(S(S(y)))))) = S(S(S((0 + S(S(y))))))
+0 = (0 + S(S(S(S(S(y)))))) = S((0 + S(S(S(S(y)))))) = S(S((0 + S(S(S(y)))))) = S(S(S((0 + S(S(y))))))
+0 = (0 + S(S(S(S(S(y)))))) = S((0 + S(S(S(S(y)))))) = S(S((0 + S(S(S(y)))))) = S(S(S((0 + S(S(y))))))
+S(S((0 + S(S(S(y)))))) = S(S((0 + S(S(S(y))))))
+S(S((0 + S(S(S(y)))))) = S(S((0 + S(S(S(y))))))
+S(S((0 + S(S(S(y)))))) = S(S((0 + S(S(S(y))))))
+S(S((0 + S(S(S(y)))))) = S(S((0 + S(S(S(y))))))
+S(S((0 + S(S(S(y)))))) = S(S((0 + S(S(S(y))))))
+S((0 + S(S(S(y))))) = S((0 + S(S(S(y)))))
+S((0 + S(S(S(y))))) = S((0 + S(S(S(y)))))
+S((0 + S(S(S(y))))) = S((0 + S(S(S(y)))))
+S((0 + S(S(S(y))))) = S((0 + S(S(S(y)))))
+S((0 + S(S(S(y))))) = S((0 + S(S(S(y)))))
+(0 + S(S(S(y)))) = (0 + S(S(S(y))))
+(0 + S(S(S(y)))) = (0 + S(S(S(y))))
+(0 + S(S(S(y)))) = (0 + S(S(S(y))))
+(0 + S(S(S(y)))) = (0 + S(S(S(y))))
+(0 + S(S(S(y)))) = (0 + S(S(S(y))))
+0 = 0
+0 = 0
+0 = 0
+0 = 0
+0 = 0
+S(S(S(y))) = S(S(S(y)))
+S(S(S(y))) = S(S(S(y)))
+S(S(S(y))) = S(S(S(y)))
+S(S(S(y))) = S(S(S(y)))
+S(S(S(y))) = S(S(S(y)))
+S(S(y)) = S(S(y))
+S(S(y)) = S(S(y))
+S(S(y)) = S(S(y))
+S(S(y)) = S(S(y))
+S(S(y)) = S(S(y))
+S(y) = S(y)
+S(y) = S(y)
+S(y) = S(y)
+S(y) = S(y)
+S(y) = S(y)
+y = y
+y = y
+y = y
+y = y
+y = y
+0 = (0 + S(S(S(S(S(y)))))) = S((0 + S(S(S(S(y)))))) = S(S((0 + S(S(S(y)))))) = S(S(S((0 + S(S(y)))))) = S(S(S(S((0 + S(y))))))
+0 = (0 + S(S(S(S(S(y)))))) = S((0 + S(S(S(S(y)))))) = S(S((0 + S(S(S(y)))))) = S(S(S((0 + S(S(y)))))) = S(S(S(S((0 + S(y))))))
+0 = (0 + S(S(S(S(S(y)))))) = S((0 + S(S(S(S(y)))))) = S(S((0 + S(S(S(y)))))) = S(S(S((0 + S(S(y)))))) = S(S(S(S((0 + S(y))))))
+0 = (0 + S(S(S(S(S(y)))))) = S((0 + S(S(S(S(y)))))) = S(S((0 + S(S(S(y)))))) = S(S(S((0 + S(S(y)))))) = S(S(S(S((0 + S(y))))))
+0 = (0 + S(S(S(S(S(y)))))) = S((0 + S(S(S(S(y)))))) = S(S((0 + S(S(S(y)))))) = S(S(S((0 + S(S(y)))))) = S(S(S(S((0 + S(y))))))
+S(S(S((0 + S(S(y)))))) = S(S(S((0 + S(S(y))))))
+S(S(S((0 + S(S(y)))))) = S(S(S((0 + S(S(y))))))
+S(S(S((0 + S(S(y)))))) = S(S(S((0 + S(S(y))))))
+S(S(S((0 + S(S(y)))))) = S(S(S((0 + S(S(y))))))
+S(S(S((0 + S(S(y)))))) = S(S(S((0 + S(S(y))))))
+S(S((0 + S(S(y))))) = S(S((0 + S(S(y)))))
+S(S((0 + S(S(y))))) = S(S((0 + S(S(y)))))
+S(S((0 + S(S(y))))) = S(S((0 + S(S(y)))))
+S(S((0 + S(S(y))))) = S(S((0 + S(S(y)))))
+S(S((0 + S(S(y))))) = S(S((0 + S(S(y)))))
+S((0 + S(S(y)))) = S((0 + S(S(y))))
+S((0 + S(S(y)))) = S((0 + S(S(y))))
+S((0 + S(S(y)))) = S((0 + S(S(y))))
+S((0 + S(S(y)))) = S((0 + S(S(y))))
+S((0 + S(S(y)))) = S((0 + S(S(y))))
+(0 + S(S(y))) = (0 + S(S(y)))
+(0 + S(S(y))) = (0 + S(S(y)))
+(0 + S(S(y))) = (0 + S(S(y)))
+(0 + S(S(y))) = (0 + S(S(y)))
+(0 + S(S(y))) = (0 + S(S(y)))
+0 = 0
+0 = 0
+0 = 0
+0 = 0
+0 = 0
+S(S(y)) = S(S(y))
+S(S(y)) = S(S(y))
+S(S(y)) = S(S(y))
+S(S(y)) = S(S(y))
+S(S(y)) = S(S(y))
+S(y) = S(y)
+S(y) = S(y)
+S(y) = S(y)
+S(y) = S(y)
+S(y) = S(y)
+y = y
+y = y
+y = y
+y = y
+y = y
+0 = (0 + S(S(S(S(S(y)))))) = S((0 + S(S(S(S(y)))))) = S(S((0 + S(S(S(y)))))) = S(S(S((0 + S(S(y)))))) = S(S(S(S((0 + S(y)))))) = S(S(S(S(S((0 + y))))))
+0 = (0 + S(S(S(S(S(y)))))) = S((0 + S(S(S(S(y)))))) = S(S((0 + S(S(S(y)))))) = S(S(S((0 + S(S(y)))))) = S(S(S(S((0 + S(y)))))) = S(S(S(S(S((0 + y))))))
+0 = (0 + S(S(S(S(S(y)))))) = S((0 + S(S(S(S(y)))))) = S(S((0 + S(S(S(y)))))) = S(S(S((0 + S(S(y)))))) = S(S(S(S((0 + S(y)))))) = S(S(S(S(S((0 + y))))))
+0 = (0 + S(S(S(S(S(y)))))) = S((0 + S(S(S(S(y)))))) = S(S((0 + S(S(S(y)))))) = S(S(S((0 + S(S(y)))))) = S(S(S(S((0 + S(y)))))) = S(S(S(S(S((0 + y))))))
+0 = (0 + S(S(S(S(S(y)))))) = S((0 + S(S(S(S(y)))))) = S(S((0 + S(S(S(y)))))) = S(S(S((0 + S(S(y)))))) = S(S(S(S((0 + S(y)))))) = S(S(S(S(S((0 + y))))))
+S(S(S(S((0 + S(y)))))) = S(S(S(S((0 + S(y))))))
+S(S(S(S((0 + S(y)))))) = S(S(S(S((0 + S(y))))))
+S(S(S(S((0 + S(y)))))) = S(S(S(S((0 + S(y))))))
+S(S(S(S((0 + S(y)))))) = S(S(S(S((0 + S(y))))))
+S(S(S(S((0 + S(y)))))) = S(S(S(S((0 + S(y))))))
+S(S(S((0 + S(y))))) = S(S(S((0 + S(y)))))
+S(S(S((0 + S(y))))) = S(S(S((0 + S(y)))))
+S(S(S((0 + S(y))))) = S(S(S((0 + S(y)))))
+S(S(S((0 + S(y))))) = S(S(S((0 + S(y)))))
+S(S(S((0 + S(y))))) = S(S(S((0 + S(y)))))
+S(S((0 + S(y)))) = S(S((0 + S(y))))
+S(S((0 + S(y)))) = S(S((0 + S(y))))
+S(S((0 + S(y)))) = S(S((0 + S(y))))
+S(S((0 + S(y)))) = S(S((0 + S(y))))
+S(S((0 + S(y)))) = S(S((0 + S(y))))
+S((0 + S(y))) = S((0 + S(y)))
+S((0 + S(y))) = S((0 + S(y)))
+S((0 + S(y))) = S((0 + S(y)))
+S((0 + S(y))) = S((0 + S(y)))
+S((0 + S(y))) = S((0 + S(y)))
+(0 + S(y)) = (0 + S(y))
+(0 + S(y)) = (0 + S(y))
+(0 + S(y)) = (0 + S(y))
+(0 + S(y)) = (0 + S(y))
+(0 + S(y)) = (0 + S(y))
+0 = 0
+0 = 0
+0 = 0
+0 = 0
+0 = 0
+S(y) = S(y)
+S(y) = S(y)
+S(y) = S(y)
+S(y) = S(y)
+S(y) = S(y)
+y = y
+y = y
+y = y
+y = y
+y = y
+0 = (0 + S(S(S(S(S(y)))))) = S((0 + S(S(S(S(y)))))) = S(S((0 + S(S(S(y)))))) = S(S(S((0 + S(S(y)))))) = S(S(S(S((0 + S(y)))))) = S(S(S(S(S((0 + y))))))
+0 = (0 + S(S(S(S(S(y)))))) = S((0 + S(S(S(S(y)))))) = S(S((0 + S(S(S(y)))))) = S(S(S((0 + S(S(y)))))) = S(S(S(S((0 + S(y)))))) = S(S(S(S(S((0 + y))))))
+0 = (0 + S(S(S(S(S(y)))))) = S((0 + S(S(S(S(y)))))) = S(S((0 + S(S(S(y)))))) = S(S(S((0 + S(S(y)))))) = S(S(S(S((0 + S(y)))))) = S(S(S(S(S((0 + y))))))
+0 = (0 + S(S(S(S(S(y)))))) = S((0 + S(S(S(S(y)))))) = S(S((0 + S(S(S(y)))))) = S(S(S((0 + S(S(y)))))) = S(S(S(S((0 + S(y)))))) = S(S(S(S(S((0 + y))))))
+0 = (0 + S(S(S(S(S(y)))))) = S((0 + S(S(S(S(y)))))) = S(S((0 + S(S(S(y)))))) = S(S(S((0 + S(S(y)))))) = S(S(S(S((0 + S(y)))))) = S(S(S(S(S((0 + y))))))
+S(S(S(S(S((0 + y)))))) = S(S(S(S(S((0 + y))))))
+S(S(S(S(S((0 + y)))))) = S(S(S(S(S((0 + y))))))
+S(S(S(S(S((0 + y)))))) = S(S(S(S(S((0 + y))))))
+S(S(S(S(S((0 + y)))))) = S(S(S(S(S((0 + y))))))
+S(S(S(S(S((0 + y)))))) = S(S(S(S(S((0 + y))))))
+S(S(S(S((0 + y))))) = S(S(S(S((0 + y)))))
+S(S(S(S((0 + y))))) = S(S(S(S((0 + y)))))
+S(S(S(S((0 + y))))) = S(S(S(S((0 + y)))))
+S(S(S(S((0 + y))))) = S(S(S(S((0 + y)))))
+S(S(S(S((0 + y))))) = S(S(S(S((0 + y)))))
+S(S(S((0 + y)))) = S(S(S((0 + y))))
+S(S(S((0 + y)))) = S(S(S((0 + y))))
+S(S(S((0 + y)))) = S(S(S((0 + y))))
+S(S(S((0 + y)))) = S(S(S((0 + y))))
+S(S(S((0 + y)))) = S(S(S((0 + y))))
+S(S((0 + y))) = S(S((0 + y)))
+S(S((0 + y))) = S(S((0 + y)))
+S(S((0 + y))) = S(S((0 + y)))
+S(S((0 + y))) = S(S((0 + y)))
+S(S((0 + y))) = S(S((0 + y)))
+S((0 + y)) = S((0 + y))
+S((0 + y)) = S((0 + y))
+S((0 + y)) = S((0 + y))
+S((0 + y)) = S((0 + y))
+S((0 + y)) = S((0 + y))
+(0 + y) = (0 + y)
+Huzzah!
+(0 + y) = (0 + y)
+Huzzah!
+(0 + y) = (0 + y)
+Huzzah!
+(0 + y) = (0 + y)
+Huzzah!
+(0 + y) = (0 + y)
+Huzzah!
+0 = 0
+0 = 0
+0 = 0
+0 = 0
+0 = 0
+y = y
+y = y
+y = y
+y = y
+y = y
+Proposition. (0 = (0 + S(S(S(S(S(y))))))) => (0 = S(S(S(S(S(y)))))).
+Proof. Suppose 0 = (0 + S(S(S(S(S(y)))))).
+1. (0 + S(S(S(S(S(y)))))) = S((0 + S(S(S(S(y)))))) (by A2)
+2. 0 = S((0 + S(S(S(S(y)))))) (by transitivity of equality)
+3. (0 + S(S(S(S(y))))) = S((0 + S(S(S(y))))) (by A2)
+4. S((0 + S(S(S(S(y)))))) = S(S((0 + S(S(S(y)))))) (by substitution)
+5. 0 = S(S((0 + S(S(S(y)))))) (by transitivity of equality)
+6. (0 + S(S(S(y)))) = S((0 + S(S(y)))) (by A2)
+7. S((0 + S(S(S(y))))) = S(S((0 + S(S(y))))) (by substitution)
+8. S(S((0 + S(S(S(y)))))) = S(S(S((0 + S(S(y)))))) (by substitution)
+9. 0 = S(S(S((0 + S(S(y)))))) (by transitivity of equality)
+10. (0 + S(S(y))) = S((0 + S(y))) (by A2)
+11. S((0 + S(S(y)))) = S(S((0 + S(y)))) (by substitution)
+12. S(S((0 + S(S(y))))) = S(S(S((0 + S(y))))) (by substitution)
+13. S(S(S((0 + S(S(y)))))) = S(S(S(S((0 + S(y)))))) (by substitution)
+14. 0 = S(S(S(S((0 + S(y)))))) (by transitivity of equality)
+15. (0 + S(y)) = S((0 + y)) (by A2)
+16. S((0 + S(y))) = S(S((0 + y))) (by substitution)
+17. S(S((0 + S(y)))) = S(S(S((0 + y)))) (by substitution)
+18. S(S(S((0 + S(y))))) = S(S(S(S((0 + y))))) (by substitution)
+19. S(S(S(S((0 + S(y)))))) = S(S(S(S(S((0 + y)))))) (by substitution)
+20. 0 = S(S(S(S(S((0 + y)))))) (by transitivity of equality)
+Therefore 0 = S(S(S(S(S(y))))). QED.
+['0 = (0 + S(S(S(S(S(y))))))']
+Trying induction on y
+Proving induction on y
+substituted: ['0 = (0 + S(S(S(S(S(0))))))']
+hypotheses: ['0 = (0 + S(S(S(S(S(0))))))']
+induction hypotheses: []
+conclusion: 0 = S(S(S(S(S(0)))))
+Base case: Proposition. (0 = (0 + S(S(S(S(S(0))))))) => (0 = S(S(S(S(S(0)))))).
+Proof. Suppose 0 = (0 + S(S(S(S(S(0)))))).
+1. (0 + S(S(S(S(S(0)))))) = S((0 + S(S(S(S(0)))))) (by A2)
+2. 0 = S((0 + S(S(S(S(0)))))) (by transitivity of equality)
+3. (0 + S(S(S(S(0))))) = S((0 + S(S(S(0))))) (by A2)
+4. S((0 + S(S(S(S(0)))))) = S(S((0 + S(S(S(0)))))) (by substitution)
+5. 0 = S(S((0 + S(S(S(0)))))) (by transitivity of equality)
+6. (0 + S(S(S(0)))) = S((0 + S(S(0)))) (by A2)
+7. S((0 + S(S(S(0))))) = S(S((0 + S(S(0))))) (by substitution)
+8. S(S((0 + S(S(S(0)))))) = S(S(S((0 + S(S(0)))))) (by substitution)
+9. 0 = S(S(S((0 + S(S(0)))))) (by transitivity of equality)
+10. (0 + S(S(0))) = S((0 + S(0))) (by A2)
+11. S((0 + S(S(0)))) = S(S((0 + S(0)))) (by substitution)
+12. S(S((0 + S(S(0))))) = S(S(S((0 + S(0))))) (by substitution)
+13. S(S(S((0 + S(S(0)))))) = S(S(S(S((0 + S(0)))))) (by substitution)
+14. 0 = S(S(S(S((0 + S(0)))))) (by transitivity of equality)
+15. (0 + S(0)) = S((0 + 0)) (by A2)
+16. S((0 + S(0))) = S(S((0 + 0))) (by substitution)
+17. S(S((0 + S(0)))) = S(S(S((0 + 0)))) (by substitution)
+18. S(S(S((0 + S(0))))) = S(S(S(S((0 + 0))))) (by substitution)
+19. S(S(S(S((0 + S(0)))))) = S(S(S(S(S((0 + 0)))))) (by substitution)
+20. 0 = S(S(S(S(S((0 + 0)))))) (by transitivity of equality)
+21. (0 + 0) = 0 (by A1)
+22. S((0 + 0)) = S(0) (by substitution)
+23. S(S((0 + 0))) = S(S(0)) (by substitution)
+24. S(S(S((0 + 0)))) = S(S(S(0))) (by substitution)
+25. S(S(S(S((0 + 0))))) = S(S(S(S(0)))) (by substitution)
+26. S(S(S(S(S((0 + 0)))))) = S(S(S(S(S(0))))) (by substitution)
+27. 0 = S(S(S(S(S(0))))) (by transitivity of equality)
+Therefore 0 = S(S(S(S(S(0))))). QED.
+hypotheses: ['0 = (0 + S(S(S(S(S(S(y)))))))']
+induction hypotheses: ['there exists a y such that (0 = (0 + y)) => (0 = y)', 'there exists a y such that (0 = (0 + S(y))) => (0 = S(y))', 'there exists a y such that (0 = (0 + S(S(y)))) => (0 = S(S(y)))', 'there exists a y such that (0 = (0 + S(S(S(y))))) => (0 = S(S(S(y))))', 'there exists a y such that (0 = (0 + S(S(S(S(y)))))) => (0 = S(S(S(S(y)))))', 'there exists a y such that (0 = (0 + S(S(S(S(S(y))))))) => (0 = S(S(S(S(S(y))))))']
+conclusion: 0 = S(S(S(S(S(S(y))))))
+0 = (0 + S(S(S(S(S(S(y)))))))
+0 = (0 + S(S(S(S(S(S(y)))))))
+0 = (0 + S(S(S(S(S(S(y)))))))
+0 = (0 + S(S(S(S(S(S(y)))))))
+0 = (0 + S(S(S(S(S(S(y)))))))
+0 = (0 + S(S(S(S(S(S(y)))))))
+0 = 0
+0 = 0
+0 = 0
+0 = 0
+0 = 0
+0 = 0
+0 = (0 + S(S(S(S(S(S(y))))))) = S((0 + S(S(S(S(S(y)))))))
+0 = (0 + S(S(S(S(S(S(y))))))) = S((0 + S(S(S(S(S(y)))))))
+0 = (0 + S(S(S(S(S(S(y))))))) = S((0 + S(S(S(S(S(y)))))))
+0 = (0 + S(S(S(S(S(S(y))))))) = S((0 + S(S(S(S(S(y)))))))
+0 = (0 + S(S(S(S(S(S(y))))))) = S((0 + S(S(S(S(S(y)))))))
+0 = (0 + S(S(S(S(S(S(y))))))) = S((0 + S(S(S(S(S(y)))))))
+(0 + S(S(S(S(S(S(y))))))) = (0 + S(S(S(S(S(S(y)))))))
+(0 + S(S(S(S(S(S(y))))))) = (0 + S(S(S(S(S(S(y)))))))
+(0 + S(S(S(S(S(S(y))))))) = (0 + S(S(S(S(S(S(y)))))))
+(0 + S(S(S(S(S(S(y))))))) = (0 + S(S(S(S(S(S(y)))))))
+(0 + S(S(S(S(S(S(y))))))) = (0 + S(S(S(S(S(S(y)))))))
+(0 + S(S(S(S(S(S(y))))))) = (0 + S(S(S(S(S(S(y)))))))
+0 = 0
+0 = 0
+0 = 0
+0 = 0
+0 = 0
+0 = 0
+S(S(S(S(S(S(y)))))) = S(S(S(S(S(S(y))))))
+S(S(S(S(S(S(y)))))) = S(S(S(S(S(S(y))))))
+S(S(S(S(S(S(y)))))) = S(S(S(S(S(S(y))))))
+S(S(S(S(S(S(y)))))) = S(S(S(S(S(S(y))))))
+S(S(S(S(S(S(y)))))) = S(S(S(S(S(S(y))))))
+S(S(S(S(S(S(y)))))) = S(S(S(S(S(S(y))))))
+S(S(S(S(S(y))))) = S(S(S(S(S(y)))))
+S(S(S(S(S(y))))) = S(S(S(S(S(y)))))
+S(S(S(S(S(y))))) = S(S(S(S(S(y)))))
+S(S(S(S(S(y))))) = S(S(S(S(S(y)))))
+S(S(S(S(S(y))))) = S(S(S(S(S(y)))))
+S(S(S(S(S(y))))) = S(S(S(S(S(y)))))
+S(S(S(S(y)))) = S(S(S(S(y))))
+S(S(S(S(y)))) = S(S(S(S(y))))
+S(S(S(S(y)))) = S(S(S(S(y))))
+S(S(S(S(y)))) = S(S(S(S(y))))
+S(S(S(S(y)))) = S(S(S(S(y))))
+S(S(S(S(y)))) = S(S(S(S(y))))
+S(S(S(y))) = S(S(S(y)))
+S(S(S(y))) = S(S(S(y)))
+S(S(S(y))) = S(S(S(y)))
+S(S(S(y))) = S(S(S(y)))
+S(S(S(y))) = S(S(S(y)))
+S(S(S(y))) = S(S(S(y)))
+S(S(y)) = S(S(y))
+S(S(y)) = S(S(y))
+S(S(y)) = S(S(y))
+S(S(y)) = S(S(y))
+S(S(y)) = S(S(y))
+S(S(y)) = S(S(y))
+S(y) = S(y)
+S(y) = S(y)
+S(y) = S(y)
+S(y) = S(y)
+S(y) = S(y)
+S(y) = S(y)
+y = y
+y = y
+y = y
+y = y
+y = y
+y = y
+0 = (0 + S(S(S(S(S(S(y))))))) = S((0 + S(S(S(S(S(y))))))) = S(S((0 + S(S(S(S(y)))))))
+0 = (0 + S(S(S(S(S(S(y))))))) = S((0 + S(S(S(S(S(y))))))) = S(S((0 + S(S(S(S(y)))))))
+0 = (0 + S(S(S(S(S(S(y))))))) = S((0 + S(S(S(S(S(y))))))) = S(S((0 + S(S(S(S(y)))))))
+0 = (0 + S(S(S(S(S(S(y))))))) = S((0 + S(S(S(S(S(y))))))) = S(S((0 + S(S(S(S(y)))))))
+0 = (0 + S(S(S(S(S(S(y))))))) = S((0 + S(S(S(S(S(y))))))) = S(S((0 + S(S(S(S(y)))))))
+0 = (0 + S(S(S(S(S(S(y))))))) = S((0 + S(S(S(S(S(y))))))) = S(S((0 + S(S(S(S(y)))))))
+S((0 + S(S(S(S(S(y))))))) = S((0 + S(S(S(S(S(y)))))))
+S((0 + S(S(S(S(S(y))))))) = S((0 + S(S(S(S(S(y)))))))
+S((0 + S(S(S(S(S(y))))))) = S((0 + S(S(S(S(S(y)))))))
+S((0 + S(S(S(S(S(y))))))) = S((0 + S(S(S(S(S(y)))))))
+S((0 + S(S(S(S(S(y))))))) = S((0 + S(S(S(S(S(y)))))))
+S((0 + S(S(S(S(S(y))))))) = S((0 + S(S(S(S(S(y)))))))
+(0 + S(S(S(S(S(y)))))) = (0 + S(S(S(S(S(y))))))
+(0 + S(S(S(S(S(y)))))) = (0 + S(S(S(S(S(y))))))
+(0 + S(S(S(S(S(y)))))) = (0 + S(S(S(S(S(y))))))
+(0 + S(S(S(S(S(y)))))) = (0 + S(S(S(S(S(y))))))
+(0 + S(S(S(S(S(y)))))) = (0 + S(S(S(S(S(y))))))
+(0 + S(S(S(S(S(y)))))) = (0 + S(S(S(S(S(y))))))
+0 = 0
+0 = 0
+0 = 0
+0 = 0
+0 = 0
+0 = 0
+S(S(S(S(S(y))))) = S(S(S(S(S(y)))))
+S(S(S(S(S(y))))) = S(S(S(S(S(y)))))
+S(S(S(S(S(y))))) = S(S(S(S(S(y)))))
+S(S(S(S(S(y))))) = S(S(S(S(S(y)))))
+S(S(S(S(S(y))))) = S(S(S(S(S(y)))))
+S(S(S(S(S(y))))) = S(S(S(S(S(y)))))
+S(S(S(S(y)))) = S(S(S(S(y))))
+S(S(S(S(y)))) = S(S(S(S(y))))
+S(S(S(S(y)))) = S(S(S(S(y))))
+S(S(S(S(y)))) = S(S(S(S(y))))
+S(S(S(S(y)))) = S(S(S(S(y))))
+S(S(S(S(y)))) = S(S(S(S(y))))
+S(S(S(y))) = S(S(S(y)))
+S(S(S(y))) = S(S(S(y)))
+S(S(S(y))) = S(S(S(y)))
+S(S(S(y))) = S(S(S(y)))
+S(S(S(y))) = S(S(S(y)))
+S(S(S(y))) = S(S(S(y)))
+S(S(y)) = S(S(y))
+S(S(y)) = S(S(y))
+S(S(y)) = S(S(y))
+S(S(y)) = S(S(y))
+S(S(y)) = S(S(y))
+S(S(y)) = S(S(y))
+S(y) = S(y)
+S(y) = S(y)
+S(y) = S(y)
+S(y) = S(y)
+S(y) = S(y)
+S(y) = S(y)
+y = y
+y = y
+y = y
+y = y
+y = y
+y = y
+0 = (0 + S(S(S(S(S(S(y))))))) = S((0 + S(S(S(S(S(y))))))) = S(S((0 + S(S(S(S(y))))))) = S(S(S((0 + S(S(S(y)))))))
+0 = (0 + S(S(S(S(S(S(y))))))) = S((0 + S(S(S(S(S(y))))))) = S(S((0 + S(S(S(S(y))))))) = S(S(S((0 + S(S(S(y)))))))
+0 = (0 + S(S(S(S(S(S(y))))))) = S((0 + S(S(S(S(S(y))))))) = S(S((0 + S(S(S(S(y))))))) = S(S(S((0 + S(S(S(y)))))))
+0 = (0 + S(S(S(S(S(S(y))))))) = S((0 + S(S(S(S(S(y))))))) = S(S((0 + S(S(S(S(y))))))) = S(S(S((0 + S(S(S(y)))))))
+0 = (0 + S(S(S(S(S(S(y))))))) = S((0 + S(S(S(S(S(y))))))) = S(S((0 + S(S(S(S(y))))))) = S(S(S((0 + S(S(S(y)))))))
+0 = (0 + S(S(S(S(S(S(y))))))) = S((0 + S(S(S(S(S(y))))))) = S(S((0 + S(S(S(S(y))))))) = S(S(S((0 + S(S(S(y)))))))
+S(S((0 + S(S(S(S(y))))))) = S(S((0 + S(S(S(S(y)))))))
+S(S((0 + S(S(S(S(y))))))) = S(S((0 + S(S(S(S(y)))))))
+S(S((0 + S(S(S(S(y))))))) = S(S((0 + S(S(S(S(y)))))))
+S(S((0 + S(S(S(S(y))))))) = S(S((0 + S(S(S(S(y)))))))
+S(S((0 + S(S(S(S(y))))))) = S(S((0 + S(S(S(S(y)))))))
+S(S((0 + S(S(S(S(y))))))) = S(S((0 + S(S(S(S(y)))))))
+S((0 + S(S(S(S(y)))))) = S((0 + S(S(S(S(y))))))
+S((0 + S(S(S(S(y)))))) = S((0 + S(S(S(S(y))))))
+S((0 + S(S(S(S(y)))))) = S((0 + S(S(S(S(y))))))
+S((0 + S(S(S(S(y)))))) = S((0 + S(S(S(S(y))))))
+S((0 + S(S(S(S(y)))))) = S((0 + S(S(S(S(y))))))
+S((0 + S(S(S(S(y)))))) = S((0 + S(S(S(S(y))))))
+(0 + S(S(S(S(y))))) = (0 + S(S(S(S(y)))))
+(0 + S(S(S(S(y))))) = (0 + S(S(S(S(y)))))
+(0 + S(S(S(S(y))))) = (0 + S(S(S(S(y)))))
+(0 + S(S(S(S(y))))) = (0 + S(S(S(S(y)))))
+(0 + S(S(S(S(y))))) = (0 + S(S(S(S(y)))))
+(0 + S(S(S(S(y))))) = (0 + S(S(S(S(y)))))
+0 = 0
+0 = 0
+0 = 0
+0 = 0
+0 = 0
+0 = 0
+S(S(S(S(y)))) = S(S(S(S(y))))
+S(S(S(S(y)))) = S(S(S(S(y))))
+S(S(S(S(y)))) = S(S(S(S(y))))
+S(S(S(S(y)))) = S(S(S(S(y))))
+S(S(S(S(y)))) = S(S(S(S(y))))
+S(S(S(S(y)))) = S(S(S(S(y))))
+S(S(S(y))) = S(S(S(y)))
+S(S(S(y))) = S(S(S(y)))
+S(S(S(y))) = S(S(S(y)))
+S(S(S(y))) = S(S(S(y)))
+S(S(S(y))) = S(S(S(y)))
+S(S(S(y))) = S(S(S(y)))
+S(S(y)) = S(S(y))
+S(S(y)) = S(S(y))
+S(S(y)) = S(S(y))
+S(S(y)) = S(S(y))
+S(S(y)) = S(S(y))
+S(S(y)) = S(S(y))
+S(y) = S(y)
+S(y) = S(y)
+S(y) = S(y)
+S(y) = S(y)
+S(y) = S(y)
+S(y) = S(y)
+y = y
+y = y
+y = y
+y = y
+y = y
+y = y
+0 = (0 + S(S(S(S(S(S(y))))))) = S((0 + S(S(S(S(S(y))))))) = S(S((0 + S(S(S(S(y))))))) = S(S(S((0 + S(S(S(y))))))) = S(S(S(S((0 + S(S(y)))))))
+0 = (0 + S(S(S(S(S(S(y))))))) = S((0 + S(S(S(S(S(y))))))) = S(S((0 + S(S(S(S(y))))))) = S(S(S((0 + S(S(S(y))))))) = S(S(S(S((0 + S(S(y)))))))
+0 = (0 + S(S(S(S(S(S(y))))))) = S((0 + S(S(S(S(S(y))))))) = S(S((0 + S(S(S(S(y))))))) = S(S(S((0 + S(S(S(y))))))) = S(S(S(S((0 + S(S(y)))))))
+0 = (0 + S(S(S(S(S(S(y))))))) = S((0 + S(S(S(S(S(y))))))) = S(S((0 + S(S(S(S(y))))))) = S(S(S((0 + S(S(S(y))))))) = S(S(S(S((0 + S(S(y)))))))
+0 = (0 + S(S(S(S(S(S(y))))))) = S((0 + S(S(S(S(S(y))))))) = S(S((0 + S(S(S(S(y))))))) = S(S(S((0 + S(S(S(y))))))) = S(S(S(S((0 + S(S(y)))))))
+0 = (0 + S(S(S(S(S(S(y))))))) = S((0 + S(S(S(S(S(y))))))) = S(S((0 + S(S(S(S(y))))))) = S(S(S((0 + S(S(S(y))))))) = S(S(S(S((0 + S(S(y)))))))
+S(S(S((0 + S(S(S(y))))))) = S(S(S((0 + S(S(S(y)))))))
+S(S(S((0 + S(S(S(y))))))) = S(S(S((0 + S(S(S(y)))))))
+S(S(S((0 + S(S(S(y))))))) = S(S(S((0 + S(S(S(y)))))))
+S(S(S((0 + S(S(S(y))))))) = S(S(S((0 + S(S(S(y)))))))
+S(S(S((0 + S(S(S(y))))))) = S(S(S((0 + S(S(S(y)))))))
+S(S(S((0 + S(S(S(y))))))) = S(S(S((0 + S(S(S(y)))))))
+S(S((0 + S(S(S(y)))))) = S(S((0 + S(S(S(y))))))
+S(S((0 + S(S(S(y)))))) = S(S((0 + S(S(S(y))))))
+S(S((0 + S(S(S(y)))))) = S(S((0 + S(S(S(y))))))
+S(S((0 + S(S(S(y)))))) = S(S((0 + S(S(S(y))))))
+S(S((0 + S(S(S(y)))))) = S(S((0 + S(S(S(y))))))
+S(S((0 + S(S(S(y)))))) = S(S((0 + S(S(S(y))))))
+S((0 + S(S(S(y))))) = S((0 + S(S(S(y)))))
+S((0 + S(S(S(y))))) = S((0 + S(S(S(y)))))
+S((0 + S(S(S(y))))) = S((0 + S(S(S(y)))))
+S((0 + S(S(S(y))))) = S((0 + S(S(S(y)))))
+S((0 + S(S(S(y))))) = S((0 + S(S(S(y)))))
+S((0 + S(S(S(y))))) = S((0 + S(S(S(y)))))
+(0 + S(S(S(y)))) = (0 + S(S(S(y))))
+(0 + S(S(S(y)))) = (0 + S(S(S(y))))
+(0 + S(S(S(y)))) = (0 + S(S(S(y))))
+(0 + S(S(S(y)))) = (0 + S(S(S(y))))
+(0 + S(S(S(y)))) = (0 + S(S(S(y))))
+(0 + S(S(S(y)))) = (0 + S(S(S(y))))
+0 = 0
+0 = 0
+0 = 0
+0 = 0
+0 = 0
+0 = 0
+S(S(S(y))) = S(S(S(y)))
+S(S(S(y))) = S(S(S(y)))
+S(S(S(y))) = S(S(S(y)))
+S(S(S(y))) = S(S(S(y)))
+S(S(S(y))) = S(S(S(y)))
+S(S(S(y))) = S(S(S(y)))
+S(S(y)) = S(S(y))
+S(S(y)) = S(S(y))
+S(S(y)) = S(S(y))
+S(S(y)) = S(S(y))
+S(S(y)) = S(S(y))
+S(S(y)) = S(S(y))
+S(y) = S(y)
+S(y) = S(y)
+S(y) = S(y)
+S(y) = S(y)
+S(y) = S(y)
+S(y) = S(y)
+y = y
+y = y
+y = y
+y = y
+y = y
+y = y
+0 = (0 + S(S(S(S(S(S(y))))))) = S((0 + S(S(S(S(S(y))))))) = S(S((0 + S(S(S(S(y))))))) = S(S(S((0 + S(S(S(y))))))) = S(S(S(S((0 + S(S(y))))))) = S(S(S(S(S((0 + S(y)))))))
+0 = (0 + S(S(S(S(S(S(y))))))) = S((0 + S(S(S(S(S(y))))))) = S(S((0 + S(S(S(S(y))))))) = S(S(S((0 + S(S(S(y))))))) = S(S(S(S((0 + S(S(y))))))) = S(S(S(S(S((0 + S(y)))))))
+0 = (0 + S(S(S(S(S(S(y))))))) = S((0 + S(S(S(S(S(y))))))) = S(S((0 + S(S(S(S(y))))))) = S(S(S((0 + S(S(S(y))))))) = S(S(S(S((0 + S(S(y))))))) = S(S(S(S(S((0 + S(y)))))))
+0 = (0 + S(S(S(S(S(S(y))))))) = S((0 + S(S(S(S(S(y))))))) = S(S((0 + S(S(S(S(y))))))) = S(S(S((0 + S(S(S(y))))))) = S(S(S(S((0 + S(S(y))))))) = S(S(S(S(S((0 + S(y)))))))
+0 = (0 + S(S(S(S(S(S(y))))))) = S((0 + S(S(S(S(S(y))))))) = S(S((0 + S(S(S(S(y))))))) = S(S(S((0 + S(S(S(y))))))) = S(S(S(S((0 + S(S(y))))))) = S(S(S(S(S((0 + S(y)))))))
+0 = (0 + S(S(S(S(S(S(y))))))) = S((0 + S(S(S(S(S(y))))))) = S(S((0 + S(S(S(S(y))))))) = S(S(S((0 + S(S(S(y))))))) = S(S(S(S((0 + S(S(y))))))) = S(S(S(S(S((0 + S(y)))))))
+S(S(S(S((0 + S(S(y))))))) = S(S(S(S((0 + S(S(y)))))))
+S(S(S(S((0 + S(S(y))))))) = S(S(S(S((0 + S(S(y)))))))
+S(S(S(S((0 + S(S(y))))))) = S(S(S(S((0 + S(S(y)))))))
+S(S(S(S((0 + S(S(y))))))) = S(S(S(S((0 + S(S(y)))))))
+S(S(S(S((0 + S(S(y))))))) = S(S(S(S((0 + S(S(y)))))))
+S(S(S(S((0 + S(S(y))))))) = S(S(S(S((0 + S(S(y)))))))
+S(S(S((0 + S(S(y)))))) = S(S(S((0 + S(S(y))))))
+S(S(S((0 + S(S(y)))))) = S(S(S((0 + S(S(y))))))
+S(S(S((0 + S(S(y)))))) = S(S(S((0 + S(S(y))))))
+S(S(S((0 + S(S(y)))))) = S(S(S((0 + S(S(y))))))
+S(S(S((0 + S(S(y)))))) = S(S(S((0 + S(S(y))))))
+S(S(S((0 + S(S(y)))))) = S(S(S((0 + S(S(y))))))
+S(S((0 + S(S(y))))) = S(S((0 + S(S(y)))))
+S(S((0 + S(S(y))))) = S(S((0 + S(S(y)))))
+S(S((0 + S(S(y))))) = S(S((0 + S(S(y)))))
+S(S((0 + S(S(y))))) = S(S((0 + S(S(y)))))
+S(S((0 + S(S(y))))) = S(S((0 + S(S(y)))))
+S(S((0 + S(S(y))))) = S(S((0 + S(S(y)))))
+S((0 + S(S(y)))) = S((0 + S(S(y))))
+S((0 + S(S(y)))) = S((0 + S(S(y))))
+S((0 + S(S(y)))) = S((0 + S(S(y))))
+S((0 + S(S(y)))) = S((0 + S(S(y))))
+S((0 + S(S(y)))) = S((0 + S(S(y))))
+S((0 + S(S(y)))) = S((0 + S(S(y))))
+(0 + S(S(y))) = (0 + S(S(y)))
+(0 + S(S(y))) = (0 + S(S(y)))
+(0 + S(S(y))) = (0 + S(S(y)))
+(0 + S(S(y))) = (0 + S(S(y)))
+(0 + S(S(y))) = (0 + S(S(y)))
+(0 + S(S(y))) = (0 + S(S(y)))
+0 = 0
+0 = 0
+0 = 0
+0 = 0
+0 = 0
+0 = 0
+S(S(y)) = S(S(y))
+S(S(y)) = S(S(y))
+S(S(y)) = S(S(y))
+S(S(y)) = S(S(y))
+S(S(y)) = S(S(y))
+S(S(y)) = S(S(y))
+S(y) = S(y)
+S(y) = S(y)
+S(y) = S(y)
+S(y) = S(y)
+S(y) = S(y)
+S(y) = S(y)
+y = y
+y = y
+y = y
+y = y
+y = y
+y = y
+0 = (0 + S(S(S(S(S(S(y))))))) = S((0 + S(S(S(S(S(y))))))) = S(S((0 + S(S(S(S(y))))))) = S(S(S((0 + S(S(S(y))))))) = S(S(S(S((0 + S(S(y))))))) = S(S(S(S(S((0 + S(y))))))) = S(S(S(S(S(S((0 + y)))))))
+0 = (0 + S(S(S(S(S(S(y))))))) = S((0 + S(S(S(S(S(y))))))) = S(S((0 + S(S(S(S(y))))))) = S(S(S((0 + S(S(S(y))))))) = S(S(S(S((0 + S(S(y))))))) = S(S(S(S(S((0 + S(y))))))) = S(S(S(S(S(S((0 + y)))))))
+0 = (0 + S(S(S(S(S(S(y))))))) = S((0 + S(S(S(S(S(y))))))) = S(S((0 + S(S(S(S(y))))))) = S(S(S((0 + S(S(S(y))))))) = S(S(S(S((0 + S(S(y))))))) = S(S(S(S(S((0 + S(y))))))) = S(S(S(S(S(S((0 + y)))))))
+0 = (0 + S(S(S(S(S(S(y))))))) = S((0 + S(S(S(S(S(y))))))) = S(S((0 + S(S(S(S(y))))))) = S(S(S((0 + S(S(S(y))))))) = S(S(S(S((0 + S(S(y))))))) = S(S(S(S(S((0 + S(y))))))) = S(S(S(S(S(S((0 + y)))))))
+0 = (0 + S(S(S(S(S(S(y))))))) = S((0 + S(S(S(S(S(y))))))) = S(S((0 + S(S(S(S(y))))))) = S(S(S((0 + S(S(S(y))))))) = S(S(S(S((0 + S(S(y))))))) = S(S(S(S(S((0 + S(y))))))) = S(S(S(S(S(S((0 + y)))))))
+0 = (0 + S(S(S(S(S(S(y))))))) = S((0 + S(S(S(S(S(y))))))) = S(S((0 + S(S(S(S(y))))))) = S(S(S((0 + S(S(S(y))))))) = S(S(S(S((0 + S(S(y))))))) = S(S(S(S(S((0 + S(y))))))) = S(S(S(S(S(S((0 + y)))))))
