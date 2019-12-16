@@ -324,10 +324,12 @@ class Equality:
 class InductionHypothesis:
   """The implication "exists [induction_variable], forall [other variables], hypotheses => conclusions"."""
   
-  def __init__(self, hypotheses: Sequence[Equality], conclusion: Equality, induction_variable: Variable):
+  def __init__(self, hypotheses: Sequence[Equality], conclusion: Equality, induction_variable: Variable,
+      prev_induction_variables: Sequence[Variable] = []):
     self.hypotheses = hypotheses
     self.conclusion = conclusion
     self.induction_variable = induction_variable
+    self.all_induction_variables = [*prev_induction_variables, induction_variable]
   
   @staticmethod
   def _try_union_assignments(assignment, source) -> bool:
@@ -352,8 +354,8 @@ class InductionHypothesis:
       return {}
     
     if isinstance(hyp_expr, Variable):
-      # we can replace anything with a single variable (not the induction variable though)
-      return None if hyp_expr == self.induction_variable else {hyp_expr: eq_expr}
+      # we can replace anything with a single variable (not the induction variable(s) though)
+      return None if hyp_expr in self.all_induction_variables else {hyp_expr: eq_expr}
     
     if type(hyp_expr) is not type(eq_expr):
       # mismatched expression types can't work
@@ -422,7 +424,7 @@ class InductionHypothesis:
     if not hypotheses:
       # none left: sub in the conclusion
       concl_vars = find_variables(self.conclusion)
-      if any(var != self.induction_variable and var not in assignment for var in concl_vars):
+      if any(var not in self.all_induction_variables and var not in assignment for var in concl_vars):
         # unsubbed variables - FIXME could be a bug here if we don't want to sub all the variables?
         return None
       
@@ -462,9 +464,6 @@ class InductionHypothesis:
   def get_consequences(self, equality) -> Set[Equality]:
     """Find all possible assignments of free variables in equality that satisfy hypotheses and return conclusions entailed."""
     
-    print(equality)
-    if equality == Equality(Addition(ZERO, Variable('y')), Addition(ZERO, Variable('y'))):
-      print('Huzzah!')
     return self._get_consequences_for_hypotheses(self.hypotheses, equality, {})
   
   def __str__(self):
@@ -476,7 +475,7 @@ class Proof: # common proof superclass
   
   @staticmethod
   def _hypotheses_to_str(hypotheses):
-    return ' and '.join(map(str, hypotheses))
+    return ', and '.join(map(str, hypotheses))
 
 
 class ImplicationProof(Proof):
@@ -520,10 +519,11 @@ Inductive step: {self.inductive_step.text()}"""
   def __str__(self):
     return f"""Proposition. ({Proof._hypotheses_to_str(self.hypotheses)}) => ({self.conclusion}).
 {self.text()}
-Therefore {self.conclusion} by P5. QED."""
+Therefore {self.conclusion} for all {self.variable} by P5. QED."""
 
 
-def prove_implication_directly(hypotheses: Sequence[Equality], conclusion: Equality, induction_hypotheses=[]) -> ImplicationProof:
+def prove_implication_directly(
+    hypotheses: Sequence[Equality], conclusion: Equality, induction_hypotheses=[], induction_variables=[]) -> ImplicationProof:
   """Perform an exaustive search for a direct proof of hypotheses => conclusion, or return None if no proof can be found."""
   
   # the world's least efficient symbol manipulation routine
@@ -531,7 +531,7 @@ def prove_implication_directly(hypotheses: Sequence[Equality], conclusion: Equal
   # this will run forever on any more complicated axiomatic system, probably
   # this is a breadth-first search, essentially
   
-  proof = ImplicationProof(copy.deepcopy(hypotheses), copy.deepcopy(conclusion))
+  proof = ImplicationProof(copy.deepcopy(hypotheses), copy.deepcopy(conclusion), induction_hypotheses)
   
   if conclusion in hypotheses:
     return proof # well that was easy
@@ -647,15 +647,13 @@ def prove_implication_directly(hypotheses: Sequence[Equality], conclusion: Equal
     if possible_proof is not None:
       return possible_proof
   
-  print(proof)
   return None # we've looked everywhere and found nothing
 
 
 def prove_implication_by_induction(
-    hypotheses: Sequence[Equality], conclusion: Equality, induction_variable: Variable, induction_hypotheses=[]) -> InductionProof:
+    hypotheses: Sequence[Equality], conclusion: Equality, induction_variable: Variable, induction_hypotheses=[],
+    prev_induction_variables=[]) -> InductionProof:
   """Prove hypotheses => conclusion by induction on induction_variable."""
-  print('Proving induction on', induction_variable)
-  print('substituted:', list(map(str, substitute_variable(induction_variable, ZERO, *hypotheses))))
   
   # first the base case: sub in 0 and prove
   base_case = prove_implication(
@@ -666,14 +664,13 @@ def prove_implication_by_induction(
     # not true for base case => can't prove it
     return None
   
-  print('Base case:', base_case)
-  
   # then the inductive step: P(k) => P(S(k))
   successor = Successor(induction_variable)
   inductive_step = prove_implication(
     substitute_variable(induction_variable, successor, *hypotheses),
     substitute_variable(induction_variable, successor, conclusion)[0],
-    induction_hypotheses=[*induction_hypotheses, InductionHypothesis(hypotheses, conclusion, induction_variable)])
+    induction_hypotheses=[*induction_hypotheses, InductionHypothesis(hypotheses, conclusion, induction_variable, prev_induction_variables)],
+    induction_variables=[*prev_induction_variables, induction_variable])
   
   if not inductive_step:
     return None
@@ -681,30 +678,28 @@ def prove_implication_by_induction(
   return InductionProof(hypotheses, conclusion, base_case, inductive_step, induction_variable)
 
 
-def prove_implication(hypotheses: Sequence[Equality], conclusion: Equality, induction_hypotheses=[]) -> Proof:
+def prove_implication(hypotheses: Sequence[Equality], conclusion: Equality, induction_hypotheses=[], induction_variables=[]) -> Proof:
   """
   Prove hypotheses => conclusion with multiple methods until one works, or return None.
   All variables are assumed universally quantified ("for all").
   """
   # TODO don't assume all variables to be universally quantified
   
-  print('hypotheses:', list(map(str, hypotheses)))
-  print('induction hypotheses:', list(map(str, induction_hypotheses)))
-  print('conclusion:', conclusion)
-  
   # first try a direct proof
-  proof = prove_implication_directly(copy.deepcopy(hypotheses), conclusion, induction_hypotheses)
+  print('[DEBUG] Attempting direct proof of ({}) => ({})...'.format(Proof._hypotheses_to_str(hypotheses), conclusion))
+  proof = prove_implication_directly(copy.deepcopy(hypotheses), conclusion, induction_hypotheses, induction_variables)
   if proof:
     return proof
+  print('[DEBUG] Gave up on direct proof of ({}) => ({}).'.format(Proof._hypotheses_to_str(hypotheses), conclusion))
   
   # then try induction on each of the variables in the hypothesis
-  print(list(map(str, hypotheses)))
-  for variable in find_variables(*hypotheses):
-    print('Trying induction on', variable)
-    proof = prove_implication_by_induction(copy.deepcopy(hypotheses), conclusion, variable, induction_hypotheses)
+  for variable in filter(lambda var: var not in induction_variables, find_variables(*hypotheses)):
+    # we filter out induction variables so as not to induct multiple times on the same variable
+    print('[DEBUG] Trying proof by induction on {} of ({}) => ({})...'.format(variable, Proof._hypotheses_to_str(hypotheses), conclusion))
+    proof = prove_implication_by_induction(copy.deepcopy(hypotheses), conclusion, variable, induction_hypotheses, induction_variables)
     if proof:
       return proof
-    print('Gave up induction on', variable)
+    print('[DEBUG] Gave up proof by induction on {} of ({}) => ({}).'.format(variable, Proof._hypotheses_to_str(hypotheses), conclusion))
   
   # give up
   return None
