@@ -25,13 +25,17 @@ M1. a * 0 = 0.
 M2. a * S(b) = a + (a * b).
 """
 
+import copy
 import itertools
-from typing import Sequence, Tuple
+from typing import Sequence, List, Tuple, Set
 
 # No good very bad prototype of an automated theorem prover with the Peano axioms
 # Types of natural-number objects: Zero, Successor, Variable, Addition, Multiplication
 # Each have an equal_exprs() method which returns a list of (expr trivially equal, [(equality step, str justification), ...])
-# If b is in a.equal_exprs()'s first elements, then we must have a in b.equal_exprs()'s first elements.
+# Each also have a children() method which returns a tuple of natural-number objects inside them
+# and a set_child(n, v) method which sets the nth child to v.
+# TODO we don't give a -> a + 0 in equal_exprs(), so this isn't technically complete - how to do this without running forever?
+# TODO use children() to do the substitution stuff more elegantly
 
 # I really should have used type hints, shouldn't I have?
 
@@ -50,11 +54,22 @@ A2 = 'A2' # a + S(b) = S(a + b)
 M1 = 'M1' # a * 0 = 0
 M2 = 'M2' # a * S(b) = a + (a * b)
 
-class Zero:
-  """The object '0', the existence of which is asserted in P1."""
+
+class Natural:
+  """A base class for the natural number representations."""
   
   def equal_exprs(self):
-    return [] # 0 is not simplifiable.
+    return []
+  
+  def children(self):
+    return []
+  
+  def set_child(self, n, value):
+    raise NotImplementedError
+
+
+class Zero(Natural):
+  """The object '0', the existence of which is asserted in P1."""
   
   def __str__(self):
     return '0'
@@ -78,7 +93,7 @@ def sub_equal_exprs(expr, sub_exprs, convert_sub_expr_to_expr):
   return additional_exprs
 
 
-class Successor:
+class Successor(Natural):
   """The successor function S(n) with the properties asserted in P2, P3, and P4."""
   
   def __init__(self, val):
@@ -96,6 +111,14 @@ class Successor:
     exprs += sub_equal_exprs(self, self.val.equal_exprs(), Successor)
     
     return exprs
+  
+  def children(self):
+    return (self.val,)
+  
+  def set_child(self, n, value: Natural):
+    if n != 0:
+      raise IndexError
+    self.val = value
   
   def __str__(self):
     return f'S({self.val})'
@@ -116,14 +139,11 @@ def from_number(a):
   return Successor(from_number(a - 1))
 
 
-class Variable:
+class Variable(Natural):
   """A variable holding a natural number, defined by its unique symbol."""
   
   def __init__(self, symbol):
     self.symbol = symbol
-  
-  def equal_exprs(self):
-    return [] # a lone variable cannot be simplified
   
   def __str__(self):
     return self.symbol
@@ -135,7 +155,39 @@ class Variable:
     return 87 * hash((self.symbol,))
 
 
-class Addition:
+def find_variables_in_natural(natural: Natural) -> Set[Variable]:
+  """Get a set of all the distinct variables in the natural and its children."""
+  
+  variables = {var for child in natural.children() for var in find_variables_in_natural(child)}
+  if isinstance(natural, Variable):
+    variables.add(natural)
+  
+  return variables
+
+def find_variables(*equalities) -> Set[Variable]:
+  """Get a list of all the distinct variables in the equalities."""
+  return {var for equality in equalities for item in equality.items for var in find_variables_in_natural(item)}
+
+def substitute_variable_in_natural(variable: Variable, value: Natural, natural: Natural) -> Natural:
+  """Deep-copy the natural, but with variable substituted for value."""
+  
+  # try to substitute if this is a variable
+  if natural == variable:
+    return copy.deepcopy(value)
+  
+  # shallow copy and substitute all the children
+  new = copy.copy(natural)
+  for i, child in enumerate(new.children()):
+    new.set_child(i, substitute_variable_in_natural(variable, value, child))
+  
+  return new
+
+def substitute_variable(variable: Variable, value: Natural, *equalities):
+  """Deep-copy the equalities, but with variable substituted for value."""
+  return [Equality(*[substitute_variable_in_natural(variable, value, item) for item in equality.items]) for equality in equalities]
+
+
+class Addition(Natural):
   """The expression a + b."""
   
   def __init__(self, a, b):
@@ -164,6 +216,17 @@ class Addition:
     
     return exprs
   
+  def children(self):
+    return self.a, self.b
+  
+  def set_child(self, n, value: Natural):
+    if n == 0:
+      self.a = value
+    elif n == 1:
+      self.b = value
+    else:
+      raise IndexError
+  
   def __str__(self):
     return f'({self.a} + {self.b})'
   
@@ -174,7 +237,7 @@ class Addition:
     return 13 * hash((self.a, self.b))
 
 
-class Multiplication:
+class Multiplication(Natural):
   """The expression a * b."""
   
   def __init__(self, a, b):
@@ -197,6 +260,17 @@ class Multiplication:
     exprs += sub_equal_exprs(self, self.b.equal_exprs(), lambda sub_expr: Multiplication(self.a, sub_expr))
     
     return exprs
+  
+  def children(self):
+    return self.a, self.b
+  
+  def set_child(self, n, value: Natural):
+    if n == 0:
+      self.a = value
+    elif n == 1:
+      self.b = value
+    else:
+      raise IndexError
   
   def __str__(self):
     return f'({self.a} * {self.b})'
@@ -240,32 +314,65 @@ class Equality:
     return hsh
 
 
-class Proof:
-  """A set of steps, each following from the next with justification, following an argument from hypothesis to conclusion."""
+class Proof: # common proof superclass
+  
+  @staticmethod
+  def _hypotheses_to_str(hypotheses):
+    return ' and '.join(map(str, hypotheses))
+
+
+class ImplicationProof(Proof):
+  """A series of steps proving an implication of the form A & B & ... => C."""
   
   def __init__(self, hypotheses, conclusion):
-    self.hypothesis_str = ' and '.join(map(str, hypotheses))
+    self.hypotheses = hypotheses
     self.conclusion = conclusion
     self.steps = [] # Each step is (Equality, str justification)
   
   def add_step(self, equality, justification):
     self.steps.append((equality, justification))
   
-  def __str__(self):
-    proof = f'Proposition. ({self.hypothesis_str}) => ({self.conclusion}).\nSuppose {self.hypothesis_str}.\n'
+  def text(self):
+    text = f'Suppose {Proof._hypotheses_to_str(self.hypotheses)}.\n'
     for i, step in enumerate(self.steps):
-      proof += f'{i+1}. {step[0]} (by {step[1]})\n'
-    proof += f'Therefore {self.conclusion}. QED.'
-    return proof
+      text += f'{i+1}. {step[0]} (by {step[1]})\n'
+    text += f'Therefore {self.conclusion}.'
+    return text
+  
+  def __str__(self):
+    return f'Proposition. ({Proof._hypotheses_to_str(self.hypotheses)}) => ({self.conclusion}).\nProof. {self.text()} QED.'
 
 
-def prove(hypotheses: Sequence[Equality], conclusion: Equality) -> Proof:
+class InductionProof(Proof):
+  """A proof using P5: P(x) is proven by proving P(0) and P(n) => P(S(n))."""
+  
+  def __init__(self, hypotheses, conclusion, base_case: Proof, inductive_step: Proof, variable: Variable):
+    self.hypotheses = hypotheses
+    self.conclusion = conclusion
+    self.base_case = base_case
+    self.inductive_step = inductive_step
+    self.variable = variable
+  
+  def text(self):
+    return f"""Proof by induction on {self.variable}.
+Base case: {self.base_case.text()}
+Inductive step: {self.inductive_step.text()}"""
+  
+  def __str__(self):
+    return f"""Proposition. ({Proof._hypotheses_to_str(self.hypotheses)}) => ({self.conclusion}).
+{self.text()}
+Therefore {self.conclusion} by P5. QED."""
+
+
+def prove_implication_directly(hypotheses: Sequence[Equality], conclusion: Equality) -> ImplicationProof:
+  """Perform an exaustive search for a direct proof of hypotheses => conclusion, or return None if no proof can be found."""
+  
   # the world's least efficient symbol manipulation routine
   # we're just going to keep stock of all the equalities and give up when the size no longer changes
   # this will run forever on any more complicated axiomatic system, probably
   # this is a breadth-first search, essentially
   
-  proof = Proof(hypotheses, conclusion)
+  proof = ImplicationProof(copy.deepcopy(hypotheses), copy.deepcopy(conclusion))
   
   if conclusion in hypotheses:
     return proof # well that was easy
@@ -297,3 +404,60 @@ def prove(hypotheses: Sequence[Equality], conclusion: Equality) -> Proof:
           return proof
   
   return None # we've looked everywhere and found nothing
+
+
+def prove_implication_by_induction(hypotheses: Sequence[Equality], conclusion: Equality, induction_variable: Variable) -> InductionProof:
+  """Prove hypotheses => conclusion by induction on induction_variable."""
+  print('Proving induction on', induction_variable)
+  print('substituted:', list(map(str, substitute_variable(induction_variable, ZERO, *hypotheses))))
+  
+  # first the base case: sub in 0 and prove
+  base_case = prove_implication(
+    substitute_variable(induction_variable, ZERO, *hypotheses),
+    substitute_variable(induction_variable, ZERO, conclusion)[0])
+  
+  if not base_case:
+    # not true for base case => can't prove it
+    return None
+  
+  print('Base case:', base_case)
+  
+  # then the inductive step: P(k) => P(S(k))
+  # we implement "assume P(k) => P(S(k))" as "assume P(k) and P(S(k))" because we don't consider when P(k) is false
+  successor = Successor(induction_variable)
+  inductive_step = prove_implication(
+    [*hypotheses, conclusion, *substitute_variable(induction_variable, successor, *hypotheses)],
+    substitute_variable(induction_variable, successor, conclusion)[0])
+  
+  if not inductive_step:
+    return None
+  
+  return InductionProof(hypotheses, conclusion, base_case, inductive_step, induction_variable)
+
+
+def prove_implication(hypotheses: Sequence[Equality], conclusion: Equality) -> Proof:
+  """
+  Prove hypotheses => conclusion with multiple methods until one works, or return None.
+  All variables are assumed universally quantified ("for all").
+  """
+  # TODO don't assume all variables to be universally quantified
+  
+  print('hypotheses:', list(map(str, hypotheses)))
+  print('conclusion:', conclusion)
+  
+  # first try a direct proof
+  proof = prove_implication_directly(hypotheses, conclusion)
+  if proof:
+    return proof
+  
+  # then try induction on each of the variables in the hypothesis
+  print(list(map(str, hypotheses)))
+  for variable in find_variables(*hypotheses):
+    print('Trying induction on', variable)
+    proof = prove_implication_by_induction(hypotheses, conclusion, variable)
+    if proof:
+      return proof
+    print('Gave up induction on', variable)
+  
+  # give up
+  return None

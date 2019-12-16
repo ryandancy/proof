@@ -6,7 +6,7 @@ from peano import Multiplication as M
 from peano import Equality as Eq
 from peano import Variable as V
 from peano import from_number as num
-from peano import prove
+from peano import prove_implication as prove
 
 x = V('x')
 y = V('y')
@@ -37,4 +37,10 @@ print('--------')
 
 # x = 3*3 => x = 9
 proof = prove([Eq(x, M(num(3), num(3)))], Eq(x, num(9)))
+print(proof)
+
+print('--------')
+
+# x = 0 + y => x = y: requires induction!
+proof = prove([Eq(x, P(num(0), y))], Eq(x, y))
 print(proof)
