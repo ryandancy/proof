@@ -27,7 +27,7 @@ M2. a * S(b) = a + (a * b).
 
 import copy
 import itertools
-from typing import Sequence, List, Tuple, Set
+from typing import Sequence, List, Tuple, Set, Dict
 
 # No good very bad prototype of an automated theorem prover with the Peano axioms
 # Types of natural-number objects: Zero, Successor, Variable, Addition, Multiplication
@@ -53,6 +53,7 @@ A1 = 'A1' # a + 0 = a
 A2 = 'A2' # a + S(b) = S(a + b)
 M1 = 'M1' # a * 0 = 0
 M2 = 'M2' # a * S(b) = a + (a * b)
+ASSUMPTION = 'assumption'
 
 
 class Natural:
@@ -293,8 +294,9 @@ class Equality:
     self.representative = items[0] # so we don't have big long a = b = c = ...
   
   def add_item(self, item):
-    self.items.append(item)
-    self.item_set.add(item)
+    if item not in self.item_set: # make sure they don't go out of sync
+      self.items.append(item)
+      self.item_set.add(item)
   
   def __str__(self):
     return ' = '.join(map(str, self.items))
@@ -314,6 +316,151 @@ class Equality:
     return hsh
 
 
+# TODO have like a general implication with a real quantifier system rather than this hodgepodged thing
+class InductionHypothesis:
+  """The implication "exists [induction_variable], forall [other variables], hypotheses => conclusions"."""
+  
+  def __init__(self, hypotheses: Sequence[Equality], conclusion: Equality, induction_variable: Variable):
+    self.hypotheses = hypotheses
+    self.conclusion = conclusion
+    self.induction_variable = induction_variable
+  
+  @staticmethod
+  def _try_union_assignments(assignment, source) -> bool:
+    """Attempt to merge source to assignment, and return True if successful or False if there is a conflict."""
+    
+    for var, val in source.items():
+      if var in assignment:
+        if assignment[var] != val:
+          # two different values for a variable => no valid assignment
+          # example where this could happen: hyp_expr (a+b)+(b+a), eq_expr (0+0)+(0+S(0))
+          return False
+      else:
+        assignment[var] = val
+    
+    return True
+  
+  def _find_assignment_in_expr(self, hyp_expr: Natural, eq_expr: Natural) -> Dict[Variable, Natural]:
+    """Attempt to assign free variables in hyp_expr to expressions in eq_expr, or return None if this can't be done."""
+    
+    if isinstance(hyp_expr, Variable):
+      # we can replace anything with a single variable (not the induction variable though)
+      return None if hyp_expr == self.induction_variable else {hyp_expr: eq_expr}
+    
+    if type(hyp_expr) is not type(eq_expr):
+      # mismatched expression types can't work
+      return None
+    
+    # union all the child assignments together and check for consistency
+    assignment = {}
+    
+    for i, hyp_child in enumerate(hyp_expr.children()):
+      child_assignment = self._find_assignment_in_expr(hyp_child, eq_expr.children()[i])
+      
+      if child_assignment is None:
+        # can't be done in the child => can't be done in the parent
+        return None
+      
+      # union with the ongoing one
+      if not InductionHypothesis._try_union_assignments(assignment, child_assignment):
+        return None # conflict
+    
+    return assignment
+  
+  def _find_assignment_for_permutation(self, hyp_permutation, eq_permutation) -> Dict[Variable, Natural]:
+    """Find an assignment of free variables in this permutation, or return None if not possible."""
+    
+    # TODO do something like substituting the assignments we've already found instead of just checking that we
+    # get the same assignment? like we did in get_consequences?
+    
+    assignment = {}
+    
+    for hyp in hyp_permutation:
+      for eq in eq_permutation:
+        expr_assignment = self._find_assignment_in_expr(hyp, eq)
+        
+        if expr_assignment is None or not InductionHypothesis._try_union_assignments(assignment, expr_assignment):
+          return None # conflict
+    
+    return assignment
+  
+  def _find_assignments(self, hypothesis: Equality, equality: Equality) -> List[Dict[Variable, Natural]]:
+    """
+    Find all possible assignments of free variables in the equality that satisfy the hypothesis, ignoring those not present.
+    Return None if this is not possible.
+    """
+    
+    # this is O(factorial(len(hypothesis.items)) * factorial(len(equality.items))) = O(scary)
+    # each permutation of hypothesis.items and equality.items could generate another assignment, so we should check them all
+    # TODO can we avoid ultra-factorial time here? substituting?
+    
+    assignments = []
+    
+    for hyp_permutation in itertools.permutations(hypothesis.items):
+      for eq_permutation in itertools.permutations(equality.items):
+        assignment = self._find_assignment_for_permutation(hyp_permutation, eq_permutation)
+        
+        if assignment is not None and assignment not in assignments:
+          assignments.append(assignment)
+    
+    return assignments
+  
+  def _get_consequences_for_hypotheses(self, hypotheses, equality, assignment) -> Set[Equality]:
+    """Recursive helper for get_consequences. Get all consequences, or the empty set if not satisfied."""
+    
+    # we find assignments in the first, sub in the rest, repeat until all satisfied (or one isn't)
+    # this assumes the conclusions generated aren't affected by the order of the hypotheses
+    # this could very possibly be invalid, in which case we'd have like O(n!m!k!) complexity (instead of O(n!m!), so much better)
+    
+    if not hypotheses:
+      # none left: sub in the conclusion
+      concl_vars = find_variables(self.conclusion)
+      if any(var != self.induction_variable and var not in assignment for var in concl_vars):
+        # unsubbed variables - FIXME could be a bug here if we don't want to sub all the variables?
+        return None
+      
+      conclusion = self.conclusion
+      for var, val in assignment.items():
+        conclusion = substitute_variable(var, val, conclusion)
+      
+      return {conclusion}
+    
+    # get assignments from the first
+    hyp_assignments = self._find_assignments(hypotheses[0], equality)
+    
+    if hyp_assignments is None:
+      # no possible assignments
+      return set()
+    
+    conclusions = set()
+    
+    for hyp_assignment in hyp_assignments:
+      # try to merge it
+      next_assignment = assignment[:]
+      
+      if not InductionHypothesis._try_union_assignments(next_assignment, hyp_assignment):
+        continue # conflict
+      
+      # sub in all the rest
+      next_hypotheses = copy.deepcopy(hypotheses[1:])
+      next_hypotheses = substitute_variable(var, val, next_hypotheses)
+      
+      # sub in the next conclusion
+      next_conclusions = self._get_consequences_for_hypotheses(next_hypotheses, equality, next_assignment)
+      conclusions.update(next_conclusions)
+    
+    return conclusions
+  
+  def get_consequences(self, equality) -> Set[Equality]:
+    """Find all possible assignments of free variables in equality that satisfy hypotheses and return conclusions entailed."""
+    
+    return self._get_consequences_for_hypotheses(self.hypotheses, equality, {})
+  
+  def __str__(self):
+    return 'there exists a {} such that ({}) => ({})'.format(
+      self.induction_variable, ' and '.join(map(str, self.hypotheses)), self.conclusion)
+
+
 class Proof: # common proof superclass
   
   @staticmethod
@@ -324,16 +471,17 @@ class Proof: # common proof superclass
 class ImplicationProof(Proof):
   """A series of steps proving an implication of the form A & B & ... => C."""
   
-  def __init__(self, hypotheses, conclusion):
+  def __init__(self, hypotheses, conclusion, induction_hypotheses=[]):
     self.hypotheses = hypotheses
     self.conclusion = conclusion
+    self.induction_hypotheses = induction_hypotheses
     self.steps = [] # Each step is (Equality, str justification)
   
   def add_step(self, equality, justification):
     self.steps.append((equality, justification))
   
   def text(self):
-    text = f'Suppose {Proof._hypotheses_to_str(self.hypotheses)}.\n'
+    text = f'Suppose {Proof._hypotheses_to_str(self.induction_hypotheses + self.hypotheses)}.\n'
     for i, step in enumerate(self.steps):
       text += f'{i+1}. {step[0]} (by {step[1]})\n'
     text += f'Therefore {self.conclusion}.'
@@ -364,7 +512,7 @@ Inductive step: {self.inductive_step.text()}"""
 Therefore {self.conclusion} by P5. QED."""
 
 
-def prove_implication_directly(hypotheses: Sequence[Equality], conclusion: Equality) -> ImplicationProof:
+def prove_implication_directly(hypotheses: Sequence[Equality], conclusion: Equality, induction_hypotheses=[]) -> ImplicationProof:
   """Perform an exaustive search for a direct proof of hypotheses => conclusion, or return None if no proof can be found."""
   
   # the world's least efficient symbol manipulation routine
@@ -377,6 +525,7 @@ def prove_implication_directly(hypotheses: Sequence[Equality], conclusion: Equal
   if conclusion in hypotheses:
     return proof # well that was easy
   
+  equalities = list(hypotheses)
   explore_queue = [(expr, hypot) for hypot in hypotheses for expr in hypot.items] # list of (expr, equality)
   
   # just fill in all the equalities we can, what could go wrong
@@ -402,11 +551,42 @@ def prove_implication_directly(hypotheses: Sequence[Equality], conclusion: Equal
           if conclusion.items != [eq.representative, expr] and conclusion.items != [expr, eq.representative]:
             proof.add_step(conclusion, T)
           return proof
+    
+    # try the induction hypotheses on the equality
+    for induction_hypothesis in induction_hypotheses:
+      for entailed_equality in induction_hypothesis.get_consequences(eq):
+        new_equality = True
+        
+        # try to associate it with an equality
+        for equality in equalities:
+          if not equality.item_set.isdisjoint(entailed_equality.item_set):
+            # it's part of this equality
+            
+            if entailed_equality.item_set.issubset(equality.item_set):
+              # nothing new is added, abort mission
+              new_equality = False
+              break
+            
+            # add all the new items to it
+            for item in entailed_equality.items:
+              if item not in equality.item_set:
+                equality.add_item(item)
+                explore_queue.append(item)
+            
+            break # we've found the equality, no need to keep going
+        else:
+          # we didn't break: no equality found, add a new one
+          equalities.append(entailed_equality)
+          explore_queue += entailed_equality.items
+        
+        if new_equality:
+          proof.add_step(entailed_equality, ASSUMPTION)
   
   return None # we've looked everywhere and found nothing
 
 
-def prove_implication_by_induction(hypotheses: Sequence[Equality], conclusion: Equality, induction_variable: Variable) -> InductionProof:
+def prove_implication_by_induction(
+    hypotheses: Sequence[Equality], conclusion: Equality, induction_variable: Variable, induction_hypotheses=[]) -> InductionProof:
   """Prove hypotheses => conclusion by induction on induction_variable."""
   print('Proving induction on', induction_variable)
   print('substituted:', list(map(str, substitute_variable(induction_variable, ZERO, *hypotheses))))
@@ -423,11 +603,11 @@ def prove_implication_by_induction(hypotheses: Sequence[Equality], conclusion: E
   print('Base case:', base_case)
   
   # then the inductive step: P(k) => P(S(k))
-  # we implement "assume P(k) => P(S(k))" as "assume P(k) and P(S(k))" because we don't consider when P(k) is false
   successor = Successor(induction_variable)
   inductive_step = prove_implication(
-    [*hypotheses, conclusion, *substitute_variable(induction_variable, successor, *hypotheses)],
-    substitute_variable(induction_variable, successor, conclusion)[0])
+    substitute_variable(induction_variable, successor, *hypotheses),
+    substitute_variable(induction_variable, successor, conclusion)[0],
+    induction_hypotheses=[*induction_hypotheses, InductionHypothesis(hypotheses, conclusion, induction_variable)])
   
   if not inductive_step:
     return None
@@ -435,7 +615,7 @@ def prove_implication_by_induction(hypotheses: Sequence[Equality], conclusion: E
   return InductionProof(hypotheses, conclusion, base_case, inductive_step, induction_variable)
 
 
-def prove_implication(hypotheses: Sequence[Equality], conclusion: Equality) -> Proof:
+def prove_implication(hypotheses: Sequence[Equality], conclusion: Equality, induction_hypotheses=[]) -> Proof:
   """
   Prove hypotheses => conclusion with multiple methods until one works, or return None.
   All variables are assumed universally quantified ("for all").
@@ -443,10 +623,11 @@ def prove_implication(hypotheses: Sequence[Equality], conclusion: Equality) -> P
   # TODO don't assume all variables to be universally quantified
   
   print('hypotheses:', list(map(str, hypotheses)))
+  print('induction hypotheses:', list(map(str, induction_hypotheses)))
   print('conclusion:', conclusion)
   
   # first try a direct proof
-  proof = prove_implication_directly(hypotheses, conclusion)
+  proof = prove_implication_directly(copy.deepcopy(hypotheses), conclusion, induction_hypotheses)
   if proof:
     return proof
   
@@ -454,7 +635,7 @@ def prove_implication(hypotheses: Sequence[Equality], conclusion: Equality) -> P
   print(list(map(str, hypotheses)))
   for variable in find_variables(*hypotheses):
     print('Trying induction on', variable)
-    proof = prove_implication_by_induction(hypotheses, conclusion, variable)
+    proof = prove_implication_by_induction(copy.deepcopy(hypotheses), conclusion, variable, induction_hypotheses)
     if proof:
       return proof
     print('Gave up induction on', variable)
