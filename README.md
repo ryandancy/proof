@@ -15,4 +15,4 @@ Proof. Suppose x = (S(0) + S(0)).
 Therefore x = S(S(0)). QED.
 ```
 
-We essentially recursively enumerate all possible consequences of the premises until we find the conclusion, and as such the algorithm will run forever if the proposition is not true. (Returning if the proposition is not true is actually impossible, because such an algorithm would solve the [Entscheidungsproblem](https://en.wikipedia.org/wiki/Entscheidungsproblem), which is undecidable.) There are also many cases where the algorithm will run prohibitively long.
+We essentially recursively enumerate all possible consequences of the premises until we find the conclusion, and as such the algorithm will run forever if the proposition is not true. (Returning if the proposition is not true is actually impossible in full generality, because such an algorithm would solve the [Entscheidungsproblem](https://en.wikipedia.org/wiki/Entscheidungsproblem), which is undecidable.) There are also many cases where the algorithm will run prohibitively long.
